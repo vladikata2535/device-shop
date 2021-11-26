@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/catalogHead :: catalog-head"></head>
+<body>
+<nav th:replace="/fragments/commons :: navigation"></nav>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<div class="container">
+    <div class="card bg-transparent text-white">
+        <div class="card-body" th:object="${smartphone}">
+            <h3 class="card-title font-weight-bold " th:text="*{name}">Offer name</h3>
+            <h6 class="card-subtitle font-weight-bold " th:text="*{smartphone.modelName}">Smartphone name</h6>
+            <div class="row">
+                <div class="col-lg-5 col-md-5 col-sm-6">
+                    <div class="white-box text-center"><img src="/images/cell-phone.png" class="img-responsive bg-cart img-fluid"></div>
+                </div>
+                <div class="col-lg-7 col-md-7 col-sm-6">
+                    <h4 class="box-title mt-5">Smartphone description</h4>
+                    <p th:text="*{smartphone.description}">Description</p>
+                    <h2 class="mt-5" th:text="|$*{price}|">
+                        $153
+                        <!--                        <small class="text-success">(36%off)</small>-->
+                    </h2>
+                    <!--                    <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title="" data-original-title="Add to cart">-->
+                    <!--                        <i class="fa fa-shopping-cart"></i>-->
+                    <!--                    </button>-->
+                    <a th:href="@{/offers/smartphones/{id}/buy(id = *{id})}" class="btn btn-primary btn-rounded btn-success">Buy</a>
+                    <a th:href="@{/offers/smartphones/{id}/edit(id = *{id})}" class="btn btn-primary btn-rounded">Edit</a>
+                    <!--                    <a th:href="@{/offers/computers/delete/{id}(id = *{id})}" class="btn btn-primary btn-rounded btn-danger">Delete</a>-->
+                    <form th:action="@{/offers/smartphones/{id}/delete(id = *{id})}" th:method="delete" class="btn btn-primary btn-rounded btn-danger">
+                        <input type="submit" class="bg-transparent" style="border:none; color: white" value="Delete"/>
+                    </form>
+                    <h3 class="box-title mt-5">Key Highlights</h3>
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-check text-success"></i>Trust our choice for the perfect custom built machine!</li>
+                        <li><i class="fa fa-check text-success"></i>Designed to make your work and your life easier!</li>
+                        <li><i class="fa fa-check text-success"></i>Perfect example of a modern and trustfully device!</li>
+                    </ul>
+
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <h3 class="box-title mt-5">General Info</h3>
+                    <div class="table-responsive">
+
+                        <table class="table  table-product  table-dark table-hover table-bordered text-white">
+                            <tbody>
+                            <tr>
+                                <td width="390">Manufactured On</td>
+                                <td th:text="*{smartphone.manufacturedOn}"></td>
+                            </tr>
+                            <tr>
+                                <td>Company name</td>
+                                <td th:text="*{smartphone.companyName}"></td>
+                            </tr>
+                            <tr>
+                                <td>Operational System</td>
+                                <td th:text="*{smartphone.operationalSystem}"></td>
+                            </tr>
+                            <tr>
+                                <td>Chipset</td>
+                                <td th:text="*{smartphone.chipset}"></td>
+                            </tr>
+                            <tr>
+                                <td>Processor</td>
+                                <td th:text="*{smartphone.processor}"></td>
+                            </tr>
+                            <tr>
+                                <td>RAM</td>
+                                <td th:text="|*{smartphone.ram} GB|"></td>
+                            </tr>
+                            <tr>
+                                <td>Built In Memory</td>
+                                <td th:text="|*{smartphone.builtInMemory} GB|"></td>
+                            </tr>
+                            <tr>
+                                <td>Front Camera MP</td>
+                                <td th:text="|*{smartphone.frontCameraMP} MP|"></td>
+                            </tr>
+                            <tr>
+                                <td>Back Camera MP</td>
+                                <td th:text="|*{smartphone.backCameraMP} MP|"></td>
+                            </tr>
+                            <tr>
+                                <td>Battery Capacity</td>
+                                <td th:text="|*{smartphone.batteryCapacity} MAH|"></td>
+                            </tr>
+                            <tr>
+                                <td>Display Inches</td>
+                                <td th:text="*{smartphone.displayInches}"></td>
+                            </tr>
+                            <tr>
+                                <td>Seller Name</td>
+                                <td th:text="*{sellerFullName}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="/fragments/commons :: footer"></footer>
+</body>
+</html>

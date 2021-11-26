@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/commons :: head"></head>
+<body>
+
+<nav th:replace="/fragments/commons :: navigation"></nav>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col" id="computersId">
+            <h2 class="bg-blur text-light">COMPUTERS ON STOCK:</h2>
+        </div>
+        <div class="col" id="smartphonesId">
+            <h2 class="bg-blur text-light">SMARTPHONES ON STOCK:</h2>
+        </div>
+    </div>
+
+    <script th:src="@{/js/warehouse.js}"></script>
+</div>
+
+
+<footer th:replace="/fragments/commons :: footer"></footer>
+
+</body>
+</html>

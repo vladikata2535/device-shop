@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/commons :: head"></head>
+
+<body>
+<nav th:replace="/fragments/commons :: navigation"></nav>
+
+<div class="p-5 text-center">
+    <h1 class="bg-blur text-light border-bottom border-top border-left border-right">Add Computer</h1>
+    <div class="d-flex justify-content-center">
+        <form th:action="@{/computers/add-computer}" th:method="post" th:object="${computerAddBindingModel}"
+              class="text-light">
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="name">Name</label>
+                    <input th:field="*{name}" th:errorclass="bg-danger"  name="name" id="name" type="text" class="form-control" placeholder="Computer Name">
+                    <small th:if="${#fields.hasErrors('name')}"  id="nameError" class="form-text bg-danger text-light rounded">Name must be between 3 and 20
+                        characters</small>
+                </div>
+                <div class="col">
+                    <label for="manufacturedOn">Manufactured date</label>
+                    <input th:field="*{manufacturedOn}" th:errorclass="bg-danger" name="manufacturedOn" id="manufacturedOn" type="date" class="form-control" placeholder="Manufactured On Date">
+                    <small th:if="${#fields.hasErrors('manufacturedOn')}" id="manufacturedOnError" class="form-text text-light  bg-danger rounded">Manufactured date cannot be in the
+                        future</small>
+                </div>
+            </div>
+            <div class="form-row m-5">
+<!--                <div class="col">-->
+<!--                    <label for="price">Price</label>-->
+<!--                    <input th:field="*{price}" th:errorclass="bg-danger" name="price" id="price" type="number" class="form-control" placeholder="Price">-->
+<!--                    <small th:if="${#fields.hasErrors('price')}" id="priceError" class="form-text bg-danger text-light  rounded">Price must be positive</small>-->
+<!--                </div>-->
+                <div class="col">
+                    <label for="computerBox">Computer Box</label>
+                    <select th:field="*{computerBox}" th:errorclass="bg-danger" name="computerBox" id="computerBox" class="custom-select">
+                        <option value="" selected>Select Computer Box</option>
+                        <option th:each="c : ${T(computer.shop.models.entity.enums.ComputerBoxEnum).values()}" th:value="${c}" th:text="${c}" selected>Select Computer Box</option>
+                    </select>
+                    <small th:if="${#fields.hasErrors('computerBox')}" id="computerBoxError" class="form-text text-light  bg-danger rounded">You must select computer box</small>
+                </div>
+            </div>
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="videoCard">Video Card</label>
+                    <select th:field="*{videoCard}" th:errorclass="bg-danger" name="videoCard" id="videoCard" class="custom-select">
+                        <option value="" selected>Select Video Card</option>
+                        <option th:each="v : ${T(computer.shop.models.entity.enums.componentsEnums.VideoCardEnum).values()}" th:value="${v}" th:text="${v}" selected>Select Video Card</option>
+                    </select>
+                    <small th:if="${#fields.hasErrors('videoCard')}" id="videoCardError" class="form-text text-light  bg-danger rounded">You must select video card</small>
+                </div>
+                <div class="col">
+                    <label for="processor">Processor</label>
+                    <select th:field="*{processor}" th:errorclass="bg-danger" name="processor" id="processor" class="custom-select">
+                        <option value="" selected>Select Processor</option>
+                        <option th:each="p : ${T(computer.shop.models.entity.enums.componentsEnums.ProcessorEnum).values()}" th:value="${p}" th:text="${p}" selected>Select Processor</option>
+                    </select>
+                    <small th:if="${#fields.hasErrors('processor')}" id="processorError" class="form-text text-light  bg-danger rounded">You must select processor</small>
+                </div>
+            </div>
+
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="ram">Ram</label>
+                    <select th:field="*{ram}" th:errorclass="bg-danger" name="ram" id="ram" class="custom-select">
+                        <option value="" selected>Select Ram</option>
+                        <option th:each="r : ${T(computer.shop.models.entity.enums.componentsEnums.RandomAccessMemoryEnum).values()}" th:value="${r}" th:text="${r}" selected>Select Ram</option>
+                    </select>
+                    <small th:if="${#fields.hasErrors('ram')}" id="ramError" class="form-text text-light  bg-danger rounded">You must select ram</small>
+                </div>
+                <div class="col">
+                    <label for="powerSupply">Power Supply</label>
+                    <select th:field="*{powerSupply}" th:errorclass="bg-danger" name="powerSupply" id="powerSupply" class="custom-select">
+                        <option value="" selected>Select Power Supply</option>
+                        <option th:each="p : ${T(computer.shop.models.entity.enums.componentsEnums.PowerSupplyEnum).values()}" th:value="${p}" th:text="${p}" selected>Select Power Supply</option>
+                    </select>
+                    <small th:if="${#fields.hasErrors('powerSupply')}" id="powerSupplyError" class="form-text bg-danger text-light  rounded">You must select power supply</small>
+                </div>
+            </div>
+
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="drive">Drive</label>
+                    <select th:field="*{drive}" th:errorclass="bg-danger" name="drive" id="drive" class="custom-select">
+                        <option value="" selected>Select Drive</option>
+                        <option th:each="d : ${T(computer.shop.models.entity.enums.componentsEnums.DriveEnum).values()}" th:value="${d}" th:text="${d}" selected>Select Drive</option>
+                    </select>
+                    <small th:if="${#fields.hasErrors('drive')}" id="driveError" class="form-text bg-danger text-light  rounded">You must select drive</small>
+                </div>
+            </div>
+
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="description">Description</label>
+                    <textarea th:field="*{description}" th:errorclass="bg-danger" name="description" id="description" type="text" class="form-control" placeholder="Description"></textarea>
+                    <small th:if="${#fields.hasErrors('description')}" id="descriptionError" class="form-text bg-danger text-light  rounded">Description length must be more than 5 characters</small>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                <button class="btn btn-success btn-block w-50" type="submit">Add Computer</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer th:replace="/fragments/commons :: footer"></footer>
+
+</body>
+</html>

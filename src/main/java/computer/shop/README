@@ -1,0 +1,31 @@
+
+
+        Navigation:
+            home(-> [User][Admin]MyBoughtProducts(smartphone / computer) -> bought offers) / index
+            Login, Register, Logout
+            AddComputer, AddSmartphone, AddSmartPhoneOffer, AddComputerOffer,
+            MyCoupons(can activate them with session scope(set of activated coupons for current user)), Warehouse(smartphone and computer)
+            SmartPhoneProductsToBuy, ComputerProductsToBuy
+
+//TODO pri delete buton na offer ili drugo da proverq dali usera e admin ili owner na produkta
+
+Not logged in User -> Login, Register, indexPage
+
+
+Logged in [Admin] or [User](he has a balance - USD)
+
+                        -> [User][Admin]HomePage
+                        -> [User][Admin]Logout
+                    ADD:
+                        -> [Admin]AddComputer(add to warehouse of computers, redirect: home)
+                        -> [Admin]AddSmartPhone(add to warehouse of smartphones, redirect: home)
+                        -> [Admin]AddSmartPhoneOffer(choose from smartphone warehouse, redirect: SmartPhoneProductsToBuy)
+                        -> [Admin]AddComputerOffer(choose from computer warehouse, redirect: ComputerProductsToBuy)
+        MyThingsViews:
+                        -> [User][Admin]MyCoupons(one type for every next bought product)
+                        -> [Admin]SmartphoneWarehouse -> [Admin]ComputerWarehouse
+
+  BuyProduct(catalog):
+                        -> [User][Admin]SmartPhoneProductsToBuy
+                        -> [User][Admin]ComputerProductsToBuy
+                        (every product has a buy button which validates if he has enough money to buy it, after success the product is added to my bought products)

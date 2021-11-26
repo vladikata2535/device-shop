@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/catalogHead :: catalog-head"></head>
+<body>
+
+<nav th:replace="/fragments/commons :: navigation"></nav>
+
+<th:block th:if="${smartphonesCatalog.size() == 0}">
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card bg-danger">
+
+                    <div class="card-body cart">
+                        <div class="col-sm-12 empty-cart-cls text-center"><img src="https://i.imgur.com/dCdflKN.png"
+                                                                               width="130" height="130"
+                                                                               class="img-fluid mb-4 mr-3">
+                            <h3><strong class="text-white">NO SMARTPHONES AVAILABLE</strong></h3>
+                            <h4 class="text-white">Come back later to check if we have something new for buying</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block th:unless="${smartphonesCatalog.size() == 0}">
+    <div class="container-fluid d-flex justify-content-center mt-50 mb-50 p-5 ">
+        <div class="row">
+            <div th:each="s : ${smartphonesCatalog}" th:object="${s}" class="mt-2" th:classappend="${smartphonesCatalog.size() == 1 ? 'col-md-12' : smartphonesCatalog.size() == 2 ? 'col-md-6' : 'col-md-3'}" >
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-img-actions"> <img th:src="@{/images/cell-phone.png}" class="card-img img-fluid" width="96" height="350" alt=""> </div>
+                    </div>
+                    <div class="card-body bg-light text-center">
+                        <div class="mb-2">
+                            <h6 class="font-weight-semibold mb-2"> <a class="text-default mb-2" data-abc="true" th:text="*{name}"></a> </h6>
+                            <h6 class="font-weight-semibold mb-2"> <a th:href="@{/offers/smartphones/{id}/details(id = *{id})}" class="text-default mb-2" data-abc="true" th:text="*{modelName}"></a> </h6><a th:href="@{/smartphones/catalog}" class="text-muted" data-abc="true">Smartphones</a> / <a th:href="@{/computers/catalog}" class="text-muted" data-abc="true">Computers</a>
+                        </div>
+                        <h3 class="mb-0 font-weight-semibold" th:text="|$*{price}|"></h3>
+                        <div> <i class="fa fa-star star"></i> <i class="fa fa-star star"></i> <i class="fa fa-star star"></i> <i class="fa fa-star star"></i> </div>
+                        <div class="text-muted mb-3" th:text="|*{reviews} reviews|"></div>
+                        <div class="text-muted mb-3" th:text="|Created On: *{createdOn}|"></div>
+                        <a th:href="@{/offers/smartphones/{id}/details(id = *{id})}" class="btn bg-cart"><i class="fa fa-cart-plus mr-2"></i>Details</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</th:block>
+
+
+
+<footer th:replace="/fragments/commons :: footer"></footer>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/commons :: head"></head>
+<body>
+
+<nav th:replace="/fragments/commons :: navigation"></nav>
+
+<div class="p-5 text-center">
+    <h1 class="text-light bg-blur border-bottom border-top border-left border-right">Add Smartphone</h1>
+    <div class="d-flex justify-content-center">
+        <form th:action="@{/smartphones/add-smartphone}" th:method="post" th:object="${smartphoneAddBindingModel}"
+                class="text-light">
+
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="companyName">Company Name</label>
+                    <input th:field="*{companyName}" th:errorclass="bg-danger" name="companyName" id="companyName" type="text" class="form-control" placeholder="Company name">
+                    <small th:if="${#fields.hasErrors('companyName')}" id="companyNameError" class="form-text bg-danger text-light rounded">Company name must be between 3 and 20
+                        characters</small>
+                </div>
+            </div>
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="modelName">Model Name</label>
+                    <input th:field="*{modelName}" th:errorclass="bg-danger" name="modelName" id="modelName" type="text" class="form-control" placeholder="Model Name">
+                    <small th:if="${#fields.hasErrors('modelName')}" id="modelNameError" class="form-text bg-danger text-light rounded">Model name must be between 3 and 20
+                        characters</small>
+                </div>
+                <div class="col">
+                    <label for="operationalSystem">Operational System</label>
+                    <input th:field="*{operationalSystem}" th:errorclass="bg-danger" name="operationalSystem" id="operationalSystem" type="text" class="form-control" placeholder="Operational System">
+                    <small th:if="${#fields.hasErrors('operationalSystem')}" id="operationalSystemError" class="form-text bg-danger text-light rounded">OS must not be more than 20
+                        characters</small>
+                </div>
+            </div>
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="chipset">Chipset</label>
+                    <input th:field="*{chipset}" th:errorclass="bg-danger" name="chipset" id="chipset" type="text" class="form-control" placeholder="Chipset">
+                    <small th:if="${#fields.hasErrors('chipset')}" id="chipsetError" class="form-text bg-danger text-light  rounded">Chipset must be between 3 and 20
+                        characters</small>
+                </div>
+                <div class="col">
+                    <label for="processor">Processor</label>
+                    <input th:field="*{processor}" th:errorclass="bg-danger"  name="processor" id="processor" type="text" class="form-control" placeholder="Processor">
+                    <small th:if="${#fields.hasErrors('processor')}" id="processorError" class="form-text text-light  bg-danger rounded">Processor must be between 3 and 20
+                        characters</small>
+                </div>
+            </div>
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="ram">Ram</label>
+                    <input th:field="*{ram}" th:errorclass="bg-danger"  name="ram" id="ram" type="number" class="form-control" placeholder="Ram">
+                    <small th:if="${#fields.hasErrors('ram')}" id="ramError" class="form-text text-light  bg-danger rounded">Ram must be a positive number</small>
+                </div>
+                <div class="col">
+                    <label for="builtInMemory">Built In Memory</label>
+                    <input th:field="*{builtInMemory}" th:errorclass="bg-danger"  name="builtInMemory" id="builtInMemory" type="number" class="form-control" placeholder="Built In Memory">
+                    <small th:if="${#fields.hasErrors('builtInMemory')}" id="builtInMemoryError" class="form-text text-light  bg-danger rounded">Built in memory must be a positive number</small>
+                </div>
+            </div>
+
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="frontCameraMP">Front Camera MP</label>
+                    <input th:field="*{frontCameraMP}" th:errorclass="bg-danger" name="frontCameraMP" id="frontCameraMP" type="number" class="form-control" placeholder="Front Camera MP">
+                    <small th:if="${#fields.hasErrors('frontCameraMP')}" id="frontCameraMPError" class="form-text text-light  bg-danger rounded">Front Camera MP must be a positive number</small>
+                </div>
+                <div class="col">
+                    <label for="backCameraMP">Back Camera MP</label>
+                    <input th:field="*{backCameraMP}" th:errorclass="bg-danger"  name="backCameraMP" id="backCameraMP" type="number" class="form-control" placeholder="Back Camera MP">
+                    <small th:if="${#fields.hasErrors('backCameraMP')}" id="backCameraMPError" class="form-text text-light  bg-danger rounded">Back Camera MP must be a positive number</small>
+                </div>
+            </div>
+
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="batteryCapacity">Battery Capacity</label>
+                    <input th:field="*{batteryCapacity}" th:errorclass="bg-danger"  name="batteryCapacity" id="batteryCapacity" type="number" class="form-control" placeholder="Battery Capacity">
+                    <small th:if="${#fields.hasErrors('batteryCapacity')}" id="batteryCapacityError" class="form-text text-light  bg-danger rounded">Battery Capacity must be a positive number</small>
+                </div>
+                <div class="col">
+                    <label for="displayInches">Display Inches</label>
+                    <input th:field="*{displayInches}" th:errorclass="bg-danger"  name="displayInches" id="displayInches" type="number" class="form-control" placeholder="Display Inches">
+                    <small th:if="${#fields.hasErrors('displayInches')}" id="displayInchesError" class="form-text text-light  bg-danger rounded">Display Inches must be a positive number</small>
+                </div>
+            </div>
+
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="price">Price</label>
+                    <input th:field="*{price}" th:errorclass="bg-danger"  name="price" id="price" type="number" class="form-control" placeholder="Price">
+                    <small th:if="${#fields.hasErrors('price')}" id="priceError" class="form-text text-light  bg-danger rounded">Price must be a positive number</small>
+                </div>
+                <div class="col">
+                    <label for="manufacturedOn">Manufactured On</label>
+                    <input th:field="*{manufacturedOn}" th:errorclass="bg-danger" name="manufacturedOn" id="manufacturedOn" type="date" class="form-control" placeholder="Manufactured On">
+                    <small th:if="${#fields.hasErrors('manufacturedOn')}" id="manufacturedOnError" class="form-text text-light  bg-danger rounded">Manufactured on must not be in the future</small>
+                </div>
+            </div>
+
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="description">Description</label>
+                    <textarea th:field="*{description}" th:errorclass="bg-danger" name="description" id="description" type="text" class="form-control" placeholder="Description"></textarea>
+                    <small th:if="${#fields.hasErrors('description')}" id="descriptionError" class="form-text bg-danger text-light  rounded">Description length must be more than 5 characters</small>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                <button class="btn btn-success btn-block w-50" type="submit">Add Smartphone</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<footer th:replace="/fragments/commons :: footer"></footer>
+
+</body>
+</html>
