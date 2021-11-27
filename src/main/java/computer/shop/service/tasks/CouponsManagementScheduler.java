@@ -16,9 +16,9 @@ public class CouponsManagementScheduler {
         this.couponService = couponService;
     }
 
-    @Scheduled(fixedDelay = 20000, initialDelay = 10000)
+    @Scheduled(fixedDelay = 1200000)
     public void showMessage(){
-        //couponService.addCouponsToLoggedUser();
+        couponService.addCouponsToLoggedUser();
         LOGGER.info("Coupons added to logged user!");
     }
 

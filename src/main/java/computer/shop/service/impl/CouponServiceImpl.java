@@ -48,8 +48,11 @@ public class CouponServiceImpl implements CouponService {
                     CouponEntity couponFirst = couponRepository.findById((long)randomFirst).orElseThrow(() -> new ObjectNotFoundException("Coupon not found"));
                     CouponEntity couponSecond = couponRepository.findById((long)randomSecond).orElseThrow(() -> new ObjectNotFoundException("Coupon not found"));
 
+                    userEntity.getNotActiveCoupons().clear();
                     userEntity.getNotActiveCoupons().add(couponFirst);
                     userEntity.getNotActiveCoupons().add(couponSecond);
+
+                    userRepository.save(userEntity);
                 });
     }
 }

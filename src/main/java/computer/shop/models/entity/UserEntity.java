@@ -128,7 +128,7 @@ public class UserEntity extends BaseEntity{
         return this;
     }
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     public Set<CouponEntity> getNotActiveCoupons() {
         return notActiveCoupons;
     }
@@ -138,7 +138,7 @@ public class UserEntity extends BaseEntity{
         return this;
     }
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     public Set<CouponEntity> getActiveCoupons() {
         return activeCoupons;
     }
