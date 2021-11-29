@@ -10,6 +10,7 @@ import computer.shop.models.view.UserInfoViewModel;
 import computer.shop.repository.CouponRepository;
 import computer.shop.repository.UserRepository;
 import computer.shop.repository.UserRoleRepository;
+import computer.shop.service.ComputerOfferService;
 import computer.shop.service.UserService;
 import computer.shop.service.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -35,14 +36,16 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final CouponRepository couponRepository;
     private final DeviceShopUserServiceImpl deviceShopUserService;
+    private final ComputerOfferService computerOfferService;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, CouponRepository couponRepository, DeviceShopUserServiceImpl deviceShopUserService) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, CouponRepository couponRepository, DeviceShopUserServiceImpl deviceShopUserService, ComputerOfferService computerOfferService) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.couponRepository = couponRepository;
         this.deviceShopUserService = deviceShopUserService;
+        this.computerOfferService = computerOfferService;
     }
 
     @Override
@@ -129,5 +132,31 @@ public class UserServiceImpl implements UserService {
         Optional<UserEntity> byEmail = userRepository.findByEmail(email);
 
         return byUsername.isPresent() || byEmail.isPresent();
+    }
+
+    @Override
+    public boolean canUserBuyProduct(Long offerId, String couponName, Principal principal) {
+        double price = computerOfferService.findOfferPriceById(offerId);
+        double userBalance = getUserBalance(principal);
+        double result;
+
+        if (couponName != null) {
+            double percentage = Double.parseDouble(couponName.substring(0, 2));
+            price = price - (price * (percentage / 100));
+        }
+        result = userBalance - price;
+
+        if (result < 0) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public double getUserBalance(Principal principal) {
+        return userRepository
+                .findByUsername(principal.getName())
+                .map(userEntity -> userEntity.getBalance().doubleValue())
+                .orElseThrow(() -> new ObjectNotFoundException("User with name " + principal.getName() + " not found!"));
     }
 }

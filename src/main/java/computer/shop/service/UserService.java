@@ -17,4 +17,8 @@ public interface UserService {
     UserInfoViewModel getLoggedUserInfo(Principal principal);
 
     boolean isUserExistingByEmailOrUsername(String email, String username);
+
+    boolean canUserBuyProduct(Long offerId, String couponName, Principal principal);
+
+    double getUserBalance(Principal principal);
 }

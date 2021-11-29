@@ -2,19 +2,18 @@ package computer.shop.web;
 
 import computer.shop.models.binding.UserRegisterBindingModel;
 import computer.shop.models.service.UserServiceModel;
+import computer.shop.service.CouponService;
 import computer.shop.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/users")
@@ -22,10 +21,12 @@ public class UserController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final CouponService couponService;
 
-    public UserController(UserService userService, ModelMapper modelMapper) {
+    public UserController(UserService userService, ModelMapper modelMapper, CouponService couponService) {
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.couponService = couponService;
     }
 
     @GetMapping("/login")
@@ -78,8 +79,20 @@ public class UserController {
     }
 
     @GetMapping("/my-coupons")
-    public String myCoupons(){
+    public String myCoupons(Model model, Principal principal){
+
+        model.addAttribute("notActiveUserCoupons", couponService.findAllCurrentLoggedUserNotActiveCoupons(principal));
+        model.addAttribute("activeUserCoupons", couponService.findAllCurrentLoggedUserActiveCoupons(principal));
+
         return "my-coupons";
+    }
+
+    @GetMapping("/my-coupons/{id}/activate")
+    public String activateCoupon(@PathVariable Long id, Principal principal){
+
+        couponService.activateCoupon(id, principal);
+
+        return "redirect:/users/my-coupons";
     }
 
     @GetMapping("/warehouse")

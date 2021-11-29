@@ -2,12 +2,14 @@ package computer.shop.service.impl;
 
 import computer.shop.models.entity.ComputerEntity;
 import computer.shop.models.entity.ComputerOfferEntity;
+import computer.shop.models.entity.CouponEntity;
 import computer.shop.models.entity.UserEntity;
 import computer.shop.models.service.ComputerOfferServiceModel;
 import computer.shop.models.view.ComputerOfferDetailsView;
 import computer.shop.models.view.ComputerOfferViewModel;
 import computer.shop.repository.ComputerOfferRepository;
 import computer.shop.repository.ComputerRepository;
+import computer.shop.repository.UserRepository;
 import computer.shop.service.ComputerOfferService;
 import computer.shop.service.ComputerService;
 import computer.shop.service.UserService;
@@ -16,6 +18,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -27,22 +30,22 @@ public class ComputerOfferServiceImpl implements ComputerOfferService {
 
     private final ComputerOfferRepository computerOfferRepository;
     private final ComputerRepository computerRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final ComputerService computerService;
-    private final UserService userService;
 
-    public ComputerOfferServiceImpl(ComputerOfferRepository computerOfferRepository, ComputerRepository computerRepository, ModelMapper modelMapper, ComputerService computerService, UserService userService) {
+    public ComputerOfferServiceImpl(ComputerOfferRepository computerOfferRepository, ComputerRepository computerRepository, UserRepository userRepository, ModelMapper modelMapper, ComputerService computerService) {
         this.computerOfferRepository = computerOfferRepository;
         this.computerRepository = computerRepository;
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.computerService = computerService;
-        this.userService = userService;
     }
 
     @Override
     public void addComputerOffer(ComputerOfferServiceModel serviceModel, Principal principal) {
         ComputerEntity computer = computerService.findComputerByName(serviceModel.getComputer());
-        UserEntity user = userService.findUserByName(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+        UserEntity user = userRepository.findByUsername(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
 
         computer.setPublished(true);
         computerRepository.save(computer);
@@ -74,7 +77,7 @@ public class ComputerOfferServiceImpl implements ComputerOfferService {
     }
 
     @Override
-    public ComputerOfferDetailsView findOfferById(Long id, String name) {
+    public ComputerOfferDetailsView findOfferById(Long id) {
 
         return  computerOfferRepository
                 .findById(id)
@@ -97,5 +100,42 @@ public class ComputerOfferServiceImpl implements ComputerOfferService {
                     return computerOfferDetailsView;
                 })
                 .orElseThrow(() -> new ObjectNotFoundException("Computer offer with id "+ id + " not found"));
+    }
+
+    @Override
+    public double findOfferPriceById(Long offerId) {
+        return computerOfferRepository
+                .findById(offerId)
+                .map(computerOfferEntity -> computerOfferEntity.getPrice().doubleValue())
+                .orElseThrow(() -> new ObjectNotFoundException("Offer with id " + offerId + " not found!"));
+    }
+
+    @Override
+    public void buyProduct(Long offerId, String couponName, Principal principal) {
+        UserEntity user = userRepository.findByUsername(principal.getName()).orElseThrow(() -> new ObjectNotFoundException("User not found"));
+        ComputerOfferEntity offerEntity = computerOfferRepository.findById(offerId).orElseThrow(() -> new ObjectNotFoundException("Computer offer entity not found"));
+        Long computerId = offerEntity.getComputer().getId();
+
+        double price = offerEntity.getPrice().doubleValue();
+        double balance = user.getBalance().doubleValue();
+
+        if(couponName != null){
+            double percentage = Double.parseDouble(couponName.substring(0,2));
+            price = price - (price * (percentage / 100));
+        }
+
+        user.setBalance(BigDecimal.valueOf(balance - price));
+
+        for(CouponEntity coupon : user.getActiveCoupons()){
+            if(coupon.getPercentage().label.equals(Integer.parseInt(couponName.substring(0,2)))){
+                user.getActiveCoupons().remove(coupon);
+                break;
+            }
+        }
+        userRepository.save(user);
+
+        computerOfferRepository.deleteById(offerId);
+        computerRepository.deleteById(computerId);
+
     }
 }
