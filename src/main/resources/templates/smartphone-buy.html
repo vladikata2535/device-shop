@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/fragments/commons :: head"></head>
 <body>
+<script th:src="@{/js/showMoney.js}"></script>
 
 <nav th:replace="/fragments/commons :: navigation"></nav>
 
@@ -23,7 +24,7 @@
                             <div class="row text-muted" th:text="*{name}"></div>
                             <div class="row" th:text="*{smartphone.getModelName()}"></div>
                         </div>
-                        <div class="col" th:text="|$*{price}|"></div>
+                        <div id="totalMoneyOne" class="col" th:text="|$*{price}|"></div>
                     </div>
                 </div>
 
@@ -38,13 +39,13 @@
                 </div>
                 <hr>
                 <p>ADD COUPON</p>
-                <select name="couponName" class="custom-select border-dark">
+                <select onclick="showMoney(event)" name="couponName" class="custom-select border-dark">
                     <option value="" selected>SELECT COUPON</option>
                     <option th:each="c : ${couponsNames}" th:text="${c.name}" th:value="${c.name}"></option>
                 </select>
                 <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                     <div class="col">TOTAL PRICE</div>
-                    <div class="col text-right" th:text="|$*{price}|"></div>
+                    <div id="totalMoneyTwo" class="col text-right" th:text="|$*{price}|"></div>
                 </div>
 
                 <p th:if="${!canUserBuy}" class="bg-danger text-center">You don't have enough money to buy this product!</p>

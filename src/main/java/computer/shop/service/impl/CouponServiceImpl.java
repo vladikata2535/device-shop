@@ -50,11 +50,16 @@ public class CouponServiceImpl implements CouponService {
         int randomFirst = new Random().nextInt(5 - 1 + 1) + 1;
         int randomSecond = new Random().nextInt(5 - 1 + 1) + 1;
 
+        while (randomFirst == randomSecond){
+            randomSecond = new Random().nextInt(5 - 1 + 1) + 1;
+        }
+        final int second = randomSecond;
+
         userRepository
                 .findAll()
                 .forEach(userEntity -> {
                     CouponEntity couponFirst = couponRepository.findById((long) randomFirst).orElseThrow(() -> new ObjectNotFoundException("Coupon not found"));
-                    CouponEntity couponSecond = couponRepository.findById((long) randomSecond).orElseThrow(() -> new ObjectNotFoundException("Coupon not found"));
+                    CouponEntity couponSecond = couponRepository.findById((long) second).orElseThrow(() -> new ObjectNotFoundException("Coupon not found"));
 
                     userEntity.getActiveCoupons().clear();
                     userEntity.getNotActiveCoupons().clear();
