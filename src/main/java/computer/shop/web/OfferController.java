@@ -1,9 +1,11 @@
 package computer.shop.web;
 
 import computer.shop.models.binding.ComputerOfferAddBindingModel;
+import computer.shop.models.binding.ComputerUpdateBindingModel;
 import computer.shop.models.binding.CouponBuyBindingModel;
 import computer.shop.models.binding.SmartphoneOfferAddBindingModel;
 import computer.shop.models.service.ComputerOfferServiceModel;
+import computer.shop.models.service.ComputerUpdateServiceModel;
 import computer.shop.models.service.SmartphoneOfferServiceModel;
 import computer.shop.service.*;
 import org.modelmapper.ModelMapper;
@@ -95,6 +97,54 @@ public class OfferController {
         model.addAttribute("computer", computerOfferService.findOfferById(id));
 
         return "computer-details";
+    }
+
+    @DeleteMapping("/computers/{id}/delete")
+    public String deleteOffer(@PathVariable Long id, Principal principal){
+
+        computerOfferService.deleteOffer(id);
+
+        return "redirect:/computers/catalog";
+    }
+
+    @GetMapping("/computers/{id}/edit")
+    public String editComputerOffer(@PathVariable Long id, Model model, Principal principal){
+
+        ComputerUpdateServiceModel computerUpdateServiceModel = computerOfferService.findOfferForEdit(id);
+        ComputerUpdateBindingModel computerUpdateBindingModel = modelMapper.map(computerUpdateServiceModel, ComputerUpdateBindingModel.class);
+
+        model.addAttribute("computers", computerService.getAllComputers());
+        model.addAttribute("currentComputerName", computerOfferService.findComputerName(id));
+        model.addAttribute("computerUpdateBindingModel", computerUpdateBindingModel);
+
+        return "computer-update";
+    }
+
+    @GetMapping("/computers/{id}/edit/errors")
+    public String editComputerOfferErrors(@PathVariable Long id, Model model){
+
+        model.addAttribute("computers", computerService.getAllComputers());
+        model.addAttribute("currentComputerName", computerOfferService.findComputerName(id));
+
+        return "computer-update";
+    }
+
+    @PatchMapping("/computers/{id}/edit")
+    public String editConfirm(@PathVariable Long id, @Valid ComputerUpdateBindingModel computerUpdateBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal){
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("computerUpdateBindingModel", computerUpdateBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.computerUpdateBindingModel", bindingResult);
+
+            return "redirect:/offers/computers/" + id + "/edit/errors";
+        }
+
+        ComputerUpdateServiceModel computerUpdateServiceModel = modelMapper.map(computerUpdateBindingModel, ComputerUpdateServiceModel.class);
+        computerUpdateServiceModel.setPrice(computerOfferService.findPriceByComputerName(computerUpdateBindingModel.getComputerName()));
+        computerUpdateServiceModel.setId(id);
+
+        computerOfferService.updateComputer(computerUpdateServiceModel, principal, computerOfferService.findComputerName(id));
+
+        return "redirect:/offers/computers/" + id + "/details";
     }
 
     //TODO make delete and edit and make isAdminOrOwner method to check them

@@ -17,7 +17,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public ApplicationSecurityConfiguration(@Qualifier("deviceShopUserServiceImpl") UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    public ApplicationSecurityConfiguration(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -29,6 +29,11 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .antMatchers("/", "/users/login", "/users/register", "/smartphones/catalog", "/computers/catalog").permitAll()
                 .antMatchers("/statistics").hasRole(UserRoleEnum.ADMIN.name())
+                .antMatchers("/users/warehouse").hasRole(UserRoleEnum.ADMIN.name())
+                .antMatchers("/computers/add-computer").hasRole(UserRoleEnum.ADMIN.name())
+                .antMatchers("/smartphones/add-smartphone").hasRole(UserRoleEnum.ADMIN.name())
+                .antMatchers("/offers/add-computer-offer").hasRole(UserRoleEnum.ADMIN.name())
+                .antMatchers("/offers/add-smartphone-offer").hasRole(UserRoleEnum.ADMIN.name())
                 .antMatchers("/**").authenticated()
                 .and()
                 .formLogin()

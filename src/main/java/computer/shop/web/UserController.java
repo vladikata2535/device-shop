@@ -100,6 +100,22 @@ public class UserController {
         return "warehouse";
     }
 
+    @GetMapping("/profile")
+    public String profile(Model model, Principal principal){
+
+        model.addAttribute("info", userService.getUserInfo(principal));
+
+        return "profile";
+    }
+
+    @GetMapping("/profile/add-money")
+    public String addMoney(Principal principal){
+
+        userService.addMoneyToUser(principal);
+
+        return "redirect:/users/profile";
+    }
+
     @ModelAttribute
     public UserRegisterBindingModel userRegisterBindingModel(){
         return new UserRegisterBindingModel();

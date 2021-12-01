@@ -82,11 +82,23 @@
             </div>
         </div>
         <ul sec:authorize="isAuthenticated()" class="nav navbar-nav">
-            <li class="nav-item">
-                <form th:action="@{/users/logout}" th:method="post">
-                    <input class="btn nav-link " type="submit" value="Logout">
-                </form>
-            </li>
+<!--            <li class="nav-item">-->
+
+<!--            </li>-->
+            <div class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTwof" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    User
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="nav-link" th:href="@{/users/profile}">Profile</a></li>
+                    <li>
+                        <form th:action="@{/users/logout}" th:method="post">
+                            <input class="btn nav-link " type="submit" value="Logout">
+                        </form>
+                    </li>
+                </ul>
+            </div>
             <li id="balanceId" class="nav-item bg-success">
 
             </li>

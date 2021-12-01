@@ -1,6 +1,6 @@
 package computer.shop.web;
 
-import computer.shop.models.view.UserInfoViewModel;
+import computer.shop.models.view.UserBalanceViewModel;
 import computer.shop.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ public class UserInfoRestController {
     }
 
     @GetMapping("/api/user/info")
-    public ResponseEntity<UserInfoViewModel> getLoggedUserInfo(Principal principal){
+    public ResponseEntity<UserBalanceViewModel> getLoggedUserInfo(Principal principal){
         return ResponseEntity.ok(userService.getLoggedUserInfo(principal));
     }
 }

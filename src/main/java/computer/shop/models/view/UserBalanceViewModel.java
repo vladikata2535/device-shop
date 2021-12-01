@@ -2,17 +2,17 @@ package computer.shop.models.view;
 
 import java.math.BigDecimal;
 
-public class UserInfoViewModel {
+public class UserBalanceViewModel {
     private BigDecimal balance;
 
-    public UserInfoViewModel() {
+    public UserBalanceViewModel() {
     }
 
     public BigDecimal getBalance() {
         return balance;
     }
 
-    public UserInfoViewModel setBalance(BigDecimal balance) {
+    public UserBalanceViewModel setBalance(BigDecimal balance) {
         this.balance = balance;
         return this;
     }

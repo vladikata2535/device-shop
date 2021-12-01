@@ -6,7 +6,8 @@ import computer.shop.models.entity.enumEntity.UserRoleEntity;
 import computer.shop.models.entity.enums.CouponPercentageEnum;
 import computer.shop.models.entity.enums.UserRoleEnum;
 import computer.shop.models.service.UserServiceModel;
-import computer.shop.models.view.UserInfoViewModel;
+import computer.shop.models.view.UserBalanceViewModel;
+import computer.shop.models.view.UserViewModel;
 import computer.shop.repository.CouponRepository;
 import computer.shop.repository.UserRepository;
 import computer.shop.repository.UserRoleRepository;
@@ -120,10 +121,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfoViewModel getLoggedUserInfo(Principal principal) {
+    public UserBalanceViewModel getLoggedUserInfo(Principal principal) {
         UserEntity user = findUserByName(principal.getName()).orElseThrow(() -> new ObjectNotFoundException("User not found"));
 
-        return modelMapper.map(user, UserInfoViewModel.class);
+        return modelMapper.map(user, UserBalanceViewModel.class);
     }
 
     @Override
@@ -158,5 +159,27 @@ public class UserServiceImpl implements UserService {
                 .findByUsername(principal.getName())
                 .map(userEntity -> userEntity.getBalance().doubleValue())
                 .orElseThrow(() -> new ObjectNotFoundException("User with name " + principal.getName() + " not found!"));
+    }
+
+    @Override
+    public UserViewModel getUserInfo(Principal principal) {
+        return userRepository
+                .findByUsername(principal.getName())
+                .map(userEntity -> modelMapper.map(userEntity, UserViewModel.class))
+                .orElseThrow(() -> new ObjectNotFoundException("User with name " + principal.getName() + " not found!"));
+
+    }
+
+    @Override
+    public void addMoneyToUser(Principal principal) {
+        UserEntity user = findUserByName(principal.getName()).orElseThrow(() -> new ObjectNotFoundException("User not found"));
+
+        double balance = user.getBalance().doubleValue();
+
+        balance += 1000;
+
+        user.setBalance(BigDecimal.valueOf(balance));
+
+        userRepository.save(user);
     }
 }

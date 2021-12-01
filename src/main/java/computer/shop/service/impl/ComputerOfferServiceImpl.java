@@ -5,6 +5,7 @@ import computer.shop.models.entity.ComputerOfferEntity;
 import computer.shop.models.entity.CouponEntity;
 import computer.shop.models.entity.UserEntity;
 import computer.shop.models.service.ComputerOfferServiceModel;
+import computer.shop.models.service.ComputerUpdateServiceModel;
 import computer.shop.models.view.ComputerOfferDetailsView;
 import computer.shop.models.view.ComputerOfferViewModel;
 import computer.shop.repository.ComputerOfferRepository;
@@ -137,5 +138,69 @@ public class ComputerOfferServiceImpl implements ComputerOfferService {
         computerOfferRepository.deleteById(offerId);
         computerRepository.deleteById(computerId);
 
+    }
+
+    @Override
+    public void deleteOffer(Long id) {
+        ComputerOfferEntity offer = computerOfferRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Computer offer with id "+ id + " not found"));
+        ComputerEntity computer = computerRepository.findById(offer.getComputer().getId()).orElseThrow(() -> new ObjectNotFoundException("Computer with id "+ offer.getComputer().getId() + " not found"));
+
+        computer.setPublished(false);
+        computerRepository.save(computer);
+
+        computerOfferRepository.deleteById(id);
+    }
+
+    @Override
+    public ComputerUpdateServiceModel findOfferForEdit(Long id) {
+        return  computerOfferRepository
+                .findById(id)
+                .map(computerOfferEntity -> {
+                    ComputerUpdateServiceModel model = modelMapper.map(computerOfferEntity, ComputerUpdateServiceModel.class);
+                    model.setComputerName(computerOfferEntity.getComputer().getName());
+                    return model;
+                })
+                .orElseThrow(() -> new ObjectNotFoundException("Offer with id " + id + " not found!"));
+    }
+
+    @Override
+    public void updateComputer(ComputerUpdateServiceModel computerUpdateServiceModel, Principal principal, String oldComputerName) {
+        UserEntity user = userRepository.findByUsername(principal.getName()).orElseThrow(() -> new ObjectNotFoundException("User not found"));
+        ComputerOfferEntity computerOfferEntity = computerOfferRepository
+                .findById(computerUpdateServiceModel.getId())
+                .orElseThrow(() -> new ObjectNotFoundException("Offer with id " + computerUpdateServiceModel.getId() + " not found!"));
+
+        ComputerEntity oldComputer = computerRepository.findByName(oldComputerName);
+        oldComputer.setPublished(false);
+        ComputerEntity computerEntity = computerRepository.findByName(computerUpdateServiceModel.getComputerName());
+        computerEntity.setPublished(true);
+
+        computerRepository.save(oldComputer);
+        computerRepository.save(computerEntity);
+
+        computerOfferEntity.setComputer(computerEntity)
+                .setPrice(computerUpdateServiceModel.getPrice())
+                .setSeller(user)
+                .setCreatedOn(computerUpdateServiceModel.getCreatedOn())
+                .setDescription(computerUpdateServiceModel.getDescription())
+                .setName(computerUpdateServiceModel.getName());
+
+        computerOfferRepository.save(computerOfferEntity);
+    }
+
+    @Override
+    public BigDecimal findPriceByComputerName(String computerName) {
+        return computerRepository
+                .findByName(computerName)
+                .getPrice();
+    }
+
+    @Override
+    public String findComputerName(Long id) {
+        return computerOfferRepository
+                .findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Offer with id " + id + " not found!"))
+                .getComputer()
+                .getName();
     }
 }
