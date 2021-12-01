@@ -20,17 +20,16 @@
                     <p th:text="*{smartphone.description}">Description</p>
                     <h2 class="mt-5" th:text="|$*{price}|">
                         $153
-                        <!--                        <small class="text-success">(36%off)</small>-->
                     </h2>
-                    <!--                    <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title="" data-original-title="Add to cart">-->
-                    <!--                        <i class="fa fa-shopping-cart"></i>-->
-                    <!--                    </button>-->
                     <a th:href="@{/offers/smartphones/{id}/buy(id = *{id})}" class="btn btn-primary btn-rounded btn-success">Buy</a>
                     <a th:href="@{/offers/smartphones/{id}/edit(id = *{id})}" class="btn btn-primary btn-rounded">Edit</a>
-                    <!--                    <a th:href="@{/offers/computers/delete/{id}(id = *{id})}" class="btn btn-primary btn-rounded btn-danger">Delete</a>-->
+
+                    <!--                    <th:block th:if="*{canDelete}">-->
                     <form th:action="@{/offers/smartphones/{id}/delete(id = *{id})}" th:method="delete" class="btn btn-primary btn-rounded btn-danger">
                         <input type="submit" class="bg-transparent" style="border:none; color: white" value="Delete"/>
                     </form>
+                    <!--                    </th:block>-->
+
                     <h3 class="box-title mt-5">Keys for buying the product</h3>
                     <ul class="list-unstyled">
                         <li><i class="fa fa-check text-success"></i>Trust our choice for the perfect custom built machine!</li>

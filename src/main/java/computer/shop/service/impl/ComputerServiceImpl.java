@@ -7,6 +7,7 @@ import computer.shop.models.view.ComputerAddOfferViewModel;
 import computer.shop.models.view.ComputerWarehouseViewModel;
 import computer.shop.repository.*;
 import computer.shop.service.*;
+import computer.shop.service.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -67,7 +68,7 @@ public class ComputerServiceImpl implements ComputerService {
 
     @Override
     public ComputerEntity findComputerByName(String computerName) {
-        return computerRepository.findByName(computerName);
+        return computerRepository.findByName(computerName).orElseThrow(() -> new ObjectNotFoundException("Computer entity not found!"));
     }
 
     @Override

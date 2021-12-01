@@ -6,15 +6,15 @@
 <nav th:replace="/fragments/commons :: navigation"></nav>
 
 <div class="p-5 text-center">
-    <h1 class="bg-blur text-light border-bottom border-top border-left border-right">Add Computer Offer</h1>
+    <h1 class="bg-blur text-light border-bottom border-top border-left border-right">Update Smartphone Offer</h1>
     <div class="d-flex justify-content-center">
-        <form th:action="@{/offers/add-computer-offer}" th:method="post" th:object="${computerOfferAddBindingModel}"
-                class="text-light">
+        <form th:action="@{/offers/smartphones/{id}/edit(id = *{id})}" th:method="patch" th:object="${smartphoneUpdateBindingModel}"
+              class="text-light">
             <div class="form-row m-5">
                 <div class="col">
                     <label for="name">Offer Name</label>
-                    <input th:field="*{name}" th:errorclass="bg-danger"  name="name" id="name" type="text" class="form-control" placeholder="Offer Name">
-                    <small th:if="${#fields.hasErrors('name')}"  id="nameError" class="form-text bg-danger text-light rounded">Name must be between 3 and 20
+                    <input th:field="*{name}" th:errorclass="bg-danger" name="name" id="name" type="text" class="form-control" placeholder="Offer Name">
+                    <small th:if="${#fields.hasErrors('name')}" id="nameError" class="form-text bg-danger text-light rounded">Name must be between 3 and 20
                         characters</small>
                 </div>
                 <div class="col">
@@ -27,12 +27,13 @@
 
             <div class="form-row m-5">
                 <div class="col">
-                    <label for="computer">Computer</label>
-                    <select th:field="*{computer}" th:errorclass="bg-danger" name="computer" id="computer" class="custom-select">
-                        <option value="" selected>Select computer from warehouse</option>
-                        <option th:each="c : ${computers}" th:value="${c.name}" th:text="${c.name}"></option>
+                    <label for="smartphoneModelName">Smartphone</label>
+                    <select th:field="*{smartphoneModelName}" th:errorclass="bg-danger" name="smartphoneModelName" id="smartphoneModelName" class="custom-select">
+                        <option value="">Select smartphone from warehouse</option>
+                        <option th:if="${currentSmartphoneName != null}" th:value="${currentSmartphoneName}" th:text="${currentSmartphoneName}" selected></option>
+                        <option th:each="s : ${smartphones}" th:value="${s.modelName}" th:text="${s.modelName}" th:selected="${s} == *{smartphoneModelName}"></option>
                     </select>
-                    <small th:if="${#fields.hasErrors('computer')}" id="computerError" class="form-text text-light  bg-danger rounded">You must select computer</small>
+                    <small th:if="${#fields.hasErrors('smartphoneModelName')}"  id="smartphoneModelNameError" class="form-text text-light  bg-danger rounded">You must select smartphone</small>
                 </div>
             </div>
 
@@ -44,7 +45,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center mt-4">
-                <button class="btn btn-success btn-block w-50" type="submit">Add Computer Offer</button>
+                <button class="btn btn-success btn-block w-50" type="submit">Update Smartphone Offer</button>
             </div>
         </form>
     </div>

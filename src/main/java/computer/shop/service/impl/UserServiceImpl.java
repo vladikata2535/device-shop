@@ -12,6 +12,7 @@ import computer.shop.repository.CouponRepository;
 import computer.shop.repository.UserRepository;
 import computer.shop.repository.UserRoleRepository;
 import computer.shop.service.ComputerOfferService;
+import computer.shop.service.SmartphoneOfferService;
 import computer.shop.service.UserService;
 import computer.shop.service.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -38,8 +39,9 @@ public class UserServiceImpl implements UserService {
     private final CouponRepository couponRepository;
     private final DeviceShopUserServiceImpl deviceShopUserService;
     private final ComputerOfferService computerOfferService;
+    private final SmartphoneOfferService smartphoneOfferService;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, CouponRepository couponRepository, DeviceShopUserServiceImpl deviceShopUserService, ComputerOfferService computerOfferService) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, CouponRepository couponRepository, DeviceShopUserServiceImpl deviceShopUserService, ComputerOfferService computerOfferService, SmartphoneOfferService smartphoneOfferService) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.modelMapper = modelMapper;
@@ -47,6 +49,7 @@ public class UserServiceImpl implements UserService {
         this.couponRepository = couponRepository;
         this.deviceShopUserService = deviceShopUserService;
         this.computerOfferService = computerOfferService;
+        this.smartphoneOfferService = smartphoneOfferService;
     }
 
     @Override
@@ -136,8 +139,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean canUserBuyProduct(Long offerId, String couponName, Principal principal) {
-        double price = computerOfferService.findOfferPriceById(offerId);
+    public boolean canUserBuyProduct(Long smartphoneOfferId, Long computerOfferId, String couponName, Principal principal) {
+        double price;
+
+        if (smartphoneOfferId == null) {
+            price = computerOfferService.findOfferPriceById(computerOfferId);
+        } else {
+            price = smartphoneOfferService.findOfferPriceById(smartphoneOfferId);
+        }
+
         double userBalance = getUserBalance(principal);
         double result;
 

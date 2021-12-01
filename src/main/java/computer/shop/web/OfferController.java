@@ -1,12 +1,10 @@
 package computer.shop.web;
 
-import computer.shop.models.binding.ComputerOfferAddBindingModel;
-import computer.shop.models.binding.ComputerUpdateBindingModel;
-import computer.shop.models.binding.CouponBuyBindingModel;
-import computer.shop.models.binding.SmartphoneOfferAddBindingModel;
+import computer.shop.models.binding.*;
 import computer.shop.models.service.ComputerOfferServiceModel;
 import computer.shop.models.service.ComputerUpdateServiceModel;
 import computer.shop.models.service.SmartphoneOfferServiceModel;
+import computer.shop.models.service.SmartphoneUpdateServiceModel;
 import computer.shop.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -17,6 +15,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Controller
 @RequestMapping("/offers")
@@ -100,7 +100,7 @@ public class OfferController {
     }
 
     @DeleteMapping("/computers/{id}/delete")
-    public String deleteOffer(@PathVariable Long id, Principal principal){
+    public String deleteComputerOffer(@PathVariable Long id, Principal principal){
 
         computerOfferService.deleteOffer(id);
 
@@ -130,7 +130,7 @@ public class OfferController {
     }
 
     @PatchMapping("/computers/{id}/edit")
-    public String editConfirm(@PathVariable Long id, @Valid ComputerUpdateBindingModel computerUpdateBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal){
+    public String editComputerOfferConfirm(@PathVariable Long id, @Valid ComputerUpdateBindingModel computerUpdateBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal){
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("computerUpdateBindingModel", computerUpdateBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.computerUpdateBindingModel", bindingResult);
@@ -147,11 +147,8 @@ public class OfferController {
         return "redirect:/offers/computers/" + id + "/details";
     }
 
-    //TODO make delete and edit and make isAdminOrOwner method to check them
-    //TODO make a table where every user can have String info about bought products and render them on the home page
-
     @GetMapping("/computers/{id}/buy")
-    public String buy(@PathVariable Long id, Model model, Principal principal) {
+    public String buyComputer(@PathVariable Long id, Model model, Principal principal) {
 
         model.addAttribute("couponsNames", couponService.findAllCurrentLoggedUserActiveCoupons(principal));
         model.addAttribute("offerDetails", computerOfferService.findOfferById(id));
@@ -164,14 +161,14 @@ public class OfferController {
     }
 
     @PostMapping("/computers/{id}/buy")
-    public String buyConfirm(@PathVariable Long id, @Valid CouponBuyBindingModel couponBuyBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
+    public String buyComputerConfirm(@PathVariable Long id, @Valid CouponBuyBindingModel couponBuyBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
 
         boolean canUserBuyProduct;
 
         if (bindingResult.hasErrors()) {
-            canUserBuyProduct = userService.canUserBuyProduct(id, null, principal);
+            canUserBuyProduct = userService.canUserBuyProduct(null, id, null, principal);
         } else {
-            canUserBuyProduct = userService.canUserBuyProduct(id, couponBuyBindingModel.getCouponName(), principal);
+            canUserBuyProduct = userService.canUserBuyProduct(null, id, couponBuyBindingModel.getCouponName(), principal);
         }
 
         if (!canUserBuyProduct) {
@@ -191,10 +188,99 @@ public class OfferController {
     }
 
     @GetMapping("/smartphones/{id}/details")
-    public String smartphoneOfferDetails(@PathVariable Long id, Model model, Principal principal) {
-        model.addAttribute("smartphone", smartphoneOfferService.findOfferById(id, principal.getName()));
+    public String smartphoneOfferDetails(@PathVariable Long id, Model model) {
+        model.addAttribute("smartphone", smartphoneOfferService.findOfferById(id));
 
         return "smartphone-details";
+    }
+
+    @DeleteMapping("/smartphones/{id}/delete")
+    public String deleteSmartphoneOffer(@PathVariable Long id){
+
+        smartphoneOfferService.deleteOffer(id);
+
+        return "redirect:/smartphones/catalog";
+    }
+
+    @GetMapping("/smartphones/{id}/buy")
+    public String buySmartphone(@PathVariable Long id, Model model, Principal principal){
+
+        model.addAttribute("couponsNames", couponService.findAllCurrentLoggedUserActiveCoupons(principal));
+        model.addAttribute("offerDetails", smartphoneOfferService.findOfferById(id));
+
+        if (!model.containsAttribute("canUserBuy")) {
+            model.addAttribute("canUserBuy", true);
+        }
+
+        return "smartphone-buy";
+    }
+
+    @PostMapping("/smartphones/{id}/buy")
+    public String buySmartphoneConfirm(@PathVariable Long id, @Valid CouponBuyBindingModel couponBuyBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal){
+
+        boolean canUserBuyProduct;
+
+        if(bindingResult.hasErrors()){
+            canUserBuyProduct = userService.canUserBuyProduct(id, null, null, principal);
+        }else {
+            canUserBuyProduct = userService.canUserBuyProduct(id, null, couponBuyBindingModel.getCouponName(), principal);
+        }
+
+        if (!canUserBuyProduct) {
+            redirectAttributes.addFlashAttribute("canUserBuy", false);
+            redirectAttributes.addFlashAttribute("couponBuyBindingModel", couponBuyBindingModel);
+
+            return "redirect:/offers/smartphones/" + id + "/buy";
+        }
+
+        if (bindingResult.hasErrors()) {
+            smartphoneOfferService.buyProduct(id, null, principal);
+        } else {
+            smartphoneOfferService.buyProduct(id, couponBuyBindingModel.getCouponName(), principal);
+        }
+
+        return "redirect:/home";
+    }
+
+    @GetMapping("/smartphones/{id}/edit")
+    public String editSmartphoneOffer(@PathVariable Long id, Model model, Principal principal){
+
+        SmartphoneUpdateServiceModel serviceModel = smartphoneOfferService.findSmartphoneForEdit(id);
+        SmartphoneUpdateBindingModel smartphoneUpdateBindingModel = modelMapper.map(serviceModel, SmartphoneUpdateBindingModel.class);
+
+        model.addAttribute("smartphones", smartphoneService.getAllSmartphones());
+        model.addAttribute("currentSmartphoneName", smartphoneOfferService.findSmartphoneName(id));
+        model.addAttribute("smartphoneUpdateBindingModel", smartphoneUpdateBindingModel);
+
+        return "smartphone-update";
+    }
+
+    @GetMapping("/smartphones/{id}/edit/errors")
+    public String editSmartphoneOfferErrors(@PathVariable Long id, Model model){
+
+        model.addAttribute("smartphones", smartphoneService.getAllSmartphones());
+        model.addAttribute("currentSmartphoneName", smartphoneOfferService.findSmartphoneName(id));
+
+        return "smartphone-update";
+    }
+
+    @PatchMapping("/smartphones/{id}/edit")
+    public String editSmartphoneOfferConfirm(@PathVariable Long id, @Valid SmartphoneUpdateBindingModel smartphoneUpdateBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal){
+
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("smartphoneUpdateBindingModel", smartphoneUpdateBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.smartphoneUpdateBindingModel", bindingResult);
+
+            return "redirect:/offers/smartphones/" + id + "/edit/errors";
+        }
+
+        SmartphoneUpdateServiceModel smartphoneUpdateServiceModel = modelMapper.map(smartphoneUpdateBindingModel, SmartphoneUpdateServiceModel.class);
+        smartphoneUpdateServiceModel.setPrice(smartphoneOfferService.findPriceBySmartphoneName(smartphoneUpdateBindingModel.getSmartphoneModelName()));
+        smartphoneUpdateServiceModel.setId(id);
+
+        smartphoneOfferService.updateSmartphone(smartphoneUpdateServiceModel, principal, smartphoneOfferService.findSmartphoneName(id));
+
+        return "redirect:/offers/smartphones/" + id + "/details";
     }
 
     @ModelAttribute

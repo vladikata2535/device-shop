@@ -82,10 +82,7 @@
             </div>
         </div>
         <ul sec:authorize="isAuthenticated()" class="nav navbar-nav">
-<!--            <li class="nav-item">-->
-
-<!--            </li>-->
-            <div class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+            <div class="nav-item dropdown" sec:authorize="isAuthenticated()">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTwof" role="button"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     User

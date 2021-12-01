@@ -170,15 +170,16 @@ public class ComputerOfferServiceImpl implements ComputerOfferService {
                 .findById(computerUpdateServiceModel.getId())
                 .orElseThrow(() -> new ObjectNotFoundException("Offer with id " + computerUpdateServiceModel.getId() + " not found!"));
 
-        ComputerEntity oldComputer = computerRepository.findByName(oldComputerName);
+        ComputerEntity oldComputer = computerRepository.findByName(oldComputerName).orElseThrow(() -> new ObjectNotFoundException("Computer entity not found!"));
         oldComputer.setPublished(false);
-        ComputerEntity computerEntity = computerRepository.findByName(computerUpdateServiceModel.getComputerName());
+        ComputerEntity computerEntity = computerRepository.findByName(computerUpdateServiceModel.getComputerName()).orElseThrow(() -> new ObjectNotFoundException("Computer entity not found!"));
         computerEntity.setPublished(true);
 
         computerRepository.save(oldComputer);
         computerRepository.save(computerEntity);
 
-        computerOfferEntity.setComputer(computerEntity)
+        computerOfferEntity
+                .setComputer(computerEntity)
                 .setPrice(computerUpdateServiceModel.getPrice())
                 .setSeller(user)
                 .setCreatedOn(computerUpdateServiceModel.getCreatedOn())
@@ -192,6 +193,7 @@ public class ComputerOfferServiceImpl implements ComputerOfferService {
     public BigDecimal findPriceByComputerName(String computerName) {
         return computerRepository
                 .findByName(computerName)
+                .orElseThrow(() -> new ObjectNotFoundException("Computer entity not found!"))
                 .getPrice();
     }
 

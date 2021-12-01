@@ -6,6 +6,7 @@ import computer.shop.models.view.SmartphoneAddOfferViewModel;
 import computer.shop.models.view.SmartphoneWarehouseViewModel;
 import computer.shop.repository.SmartphoneRepository;
 import computer.shop.service.SmartphoneService;
+import computer.shop.service.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,7 @@ public class SmartphoneServiceImpl implements SmartphoneService {
 
     @Override
     public SmartphoneEntity findSmartphoneByModelName(String modelName) {
-        return smartphoneRepository.findByModelName(modelName);
+        return smartphoneRepository.findByModelName(modelName).orElseThrow(() -> new ObjectNotFoundException("Smartphone entity not found!"));
     }
 
     @Override
