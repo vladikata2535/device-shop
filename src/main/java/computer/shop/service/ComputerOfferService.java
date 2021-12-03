@@ -29,4 +29,6 @@ public interface ComputerOfferService {
     BigDecimal findPriceByComputerName(String computerName);
 
     String findComputerName(Long id);
+
+    boolean isAdmin(String userName, Long id);
 }

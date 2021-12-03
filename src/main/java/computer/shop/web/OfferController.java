@@ -7,6 +7,7 @@ import computer.shop.models.service.SmartphoneOfferServiceModel;
 import computer.shop.models.service.SmartphoneUpdateServiceModel;
 import computer.shop.service.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -99,6 +100,7 @@ public class OfferController {
         return "computer-details";
     }
 
+    @PreAuthorize("@computerOfferServiceImpl.isAdmin(#principal.name, #id)")
     @DeleteMapping("/computers/{id}/delete")
     public String deleteComputerOffer(@PathVariable Long id, Principal principal){
 
@@ -107,6 +109,7 @@ public class OfferController {
         return "redirect:/computers/catalog";
     }
 
+    @PreAuthorize("@computerOfferServiceImpl.isAdmin(#principal.name, #id)")
     @GetMapping("/computers/{id}/edit")
     public String editComputerOffer(@PathVariable Long id, Model model, Principal principal){
 
@@ -120,8 +123,9 @@ public class OfferController {
         return "computer-update";
     }
 
+    @PreAuthorize("@computerOfferServiceImpl.isAdmin(#principal.name, #id)")
     @GetMapping("/computers/{id}/edit/errors")
-    public String editComputerOfferErrors(@PathVariable Long id, Model model){
+    public String editComputerOfferErrors(@PathVariable Long id, Model model, Principal principal){
 
         model.addAttribute("computers", computerService.getAllComputers());
         model.addAttribute("currentComputerName", computerOfferService.findComputerName(id));
@@ -129,6 +133,7 @@ public class OfferController {
         return "computer-update";
     }
 
+    @PreAuthorize("@computerOfferServiceImpl.isAdmin(#principal.name, #id)")
     @PatchMapping("/computers/{id}/edit")
     public String editComputerOfferConfirm(@PathVariable Long id, @Valid ComputerUpdateBindingModel computerUpdateBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal){
         if(bindingResult.hasErrors()){
@@ -194,8 +199,9 @@ public class OfferController {
         return "smartphone-details";
     }
 
+    @PreAuthorize("@smartphoneOfferServiceImpl.isAdmin(#principal.name, #id)")
     @DeleteMapping("/smartphones/{id}/delete")
-    public String deleteSmartphoneOffer(@PathVariable Long id){
+    public String deleteSmartphoneOffer(@PathVariable Long id, Principal principal){
 
         smartphoneOfferService.deleteOffer(id);
 
@@ -242,6 +248,7 @@ public class OfferController {
         return "redirect:/home";
     }
 
+    @PreAuthorize("@smartphoneOfferServiceImpl.isAdmin(#principal.name, #id)")
     @GetMapping("/smartphones/{id}/edit")
     public String editSmartphoneOffer(@PathVariable Long id, Model model, Principal principal){
 
@@ -255,8 +262,9 @@ public class OfferController {
         return "smartphone-update";
     }
 
+    @PreAuthorize("@smartphoneOfferServiceImpl.isAdmin(#principal.name, #id)")
     @GetMapping("/smartphones/{id}/edit/errors")
-    public String editSmartphoneOfferErrors(@PathVariable Long id, Model model){
+    public String editSmartphoneOfferErrors(@PathVariable Long id, Model model, Principal principal){
 
         model.addAttribute("smartphones", smartphoneService.getAllSmartphones());
         model.addAttribute("currentSmartphoneName", smartphoneOfferService.findSmartphoneName(id));
@@ -264,6 +272,7 @@ public class OfferController {
         return "smartphone-update";
     }
 
+    @PreAuthorize("@smartphoneOfferServiceImpl.isAdmin(#principal.name, #id)")
     @PatchMapping("/smartphones/{id}/edit")
     public String editSmartphoneOfferConfirm(@PathVariable Long id, @Valid SmartphoneUpdateBindingModel smartphoneUpdateBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal){
 

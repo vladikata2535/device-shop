@@ -82,10 +82,13 @@
             </div>
         </div>
         <ul sec:authorize="isAuthenticated()" class="nav navbar-nav">
-            <div class="nav-item dropdown" sec:authorize="isAuthenticated()">
+            <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTwof" role="button"
                    data-bs-toggle="dropdown" aria-expanded="false">
-                    User
+                    User, <span sec:authorize="isAuthenticated()"
+                                sec:authentication="name">
+                            Name of the logged in user.
+                          </span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li><a class="nav-link" th:href="@{/users/profile}">Profile</a></li>
@@ -95,7 +98,7 @@
                         </form>
                     </li>
                 </ul>
-            </div>
+            </li>
             <li id="balanceId" class="nav-item bg-success">
 
             </li>

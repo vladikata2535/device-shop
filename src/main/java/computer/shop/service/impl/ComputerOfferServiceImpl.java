@@ -4,6 +4,8 @@ import computer.shop.models.entity.ComputerEntity;
 import computer.shop.models.entity.ComputerOfferEntity;
 import computer.shop.models.entity.CouponEntity;
 import computer.shop.models.entity.UserEntity;
+import computer.shop.models.entity.enumEntity.UserRoleEntity;
+import computer.shop.models.entity.enums.UserRoleEnum;
 import computer.shop.models.service.ComputerOfferServiceModel;
 import computer.shop.models.service.ComputerUpdateServiceModel;
 import computer.shop.models.view.ComputerOfferDetailsView;
@@ -80,7 +82,7 @@ public class ComputerOfferServiceImpl implements ComputerOfferService {
     @Override
     public ComputerOfferDetailsView findOfferById(Long id) {
 
-        return  computerOfferRepository
+        return computerOfferRepository
                 .findById(id)
                 .map(computerOfferEntity -> {
                     ComputerOfferDetailsView computerOfferDetailsView = modelMapper.map(computerOfferEntity, ComputerOfferDetailsView.class);
@@ -100,7 +102,7 @@ public class ComputerOfferServiceImpl implements ComputerOfferService {
 
                     return computerOfferDetailsView;
                 })
-                .orElseThrow(() -> new ObjectNotFoundException("Computer offer with id "+ id + " not found"));
+                .orElseThrow(() -> new ObjectNotFoundException("Computer offer with id " + id + " not found"));
     }
 
     @Override
@@ -120,15 +122,15 @@ public class ComputerOfferServiceImpl implements ComputerOfferService {
         double price = offerEntity.getPrice().doubleValue();
         double balance = user.getBalance().doubleValue();
 
-        if(couponName != null){
-            double percentage = Double.parseDouble(couponName.substring(0,2));
+        if (couponName != null) {
+            double percentage = Double.parseDouble(couponName.substring(0, 2));
             price = price - (price * (percentage / 100));
         }
 
         user.setBalance(BigDecimal.valueOf(balance - price));
 
-        for(CouponEntity coupon : user.getActiveCoupons()){
-            if(coupon.getPercentage().label.equals(Integer.parseInt(couponName.substring(0,2)))){
+        for (CouponEntity coupon : user.getActiveCoupons()) {
+            if (coupon.getPercentage().label.equals(Integer.parseInt(couponName.substring(0, 2)))) {
                 user.getActiveCoupons().remove(coupon);
                 break;
             }
@@ -142,8 +144,8 @@ public class ComputerOfferServiceImpl implements ComputerOfferService {
 
     @Override
     public void deleteOffer(Long id) {
-        ComputerOfferEntity offer = computerOfferRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Computer offer with id "+ id + " not found"));
-        ComputerEntity computer = computerRepository.findById(offer.getComputer().getId()).orElseThrow(() -> new ObjectNotFoundException("Computer with id "+ offer.getComputer().getId() + " not found"));
+        ComputerOfferEntity offer = computerOfferRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Computer offer with id " + id + " not found"));
+        ComputerEntity computer = computerRepository.findById(offer.getComputer().getId()).orElseThrow(() -> new ObjectNotFoundException("Computer with id " + offer.getComputer().getId() + " not found"));
 
         computer.setPublished(false);
         computerRepository.save(computer);
@@ -153,7 +155,7 @@ public class ComputerOfferServiceImpl implements ComputerOfferService {
 
     @Override
     public ComputerUpdateServiceModel findOfferForEdit(Long id) {
-        return  computerOfferRepository
+        return computerOfferRepository
                 .findById(id)
                 .map(computerOfferEntity -> {
                     ComputerUpdateServiceModel model = modelMapper.map(computerOfferEntity, ComputerUpdateServiceModel.class);
@@ -204,5 +206,24 @@ public class ComputerOfferServiceImpl implements ComputerOfferService {
                 .orElseThrow(() -> new ObjectNotFoundException("Offer with id " + id + " not found!"))
                 .getComputer()
                 .getName();
+    }
+
+    @Override
+    public boolean isAdmin(String userName, Long id) {
+        Optional<ComputerOfferEntity> offerOpt = computerOfferRepository.findById(id);
+        Optional<UserEntity> user = userRepository.findByUsername(userName);
+
+        if (offerOpt.isEmpty() || user.isEmpty()) {
+            return false;
+        } else {
+            return user
+                    .get()
+                    .getRoles()
+                    .stream()
+                    .map(UserRoleEntity::getRole)
+                    .anyMatch(r -> r == UserRoleEnum.ADMIN);
+        }
+
+
     }
 }

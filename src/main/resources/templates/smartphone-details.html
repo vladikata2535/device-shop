@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec='http://www.thymeleaf.org/extras/spring-security'>
 <head th:replace="/fragments/catalogHead :: catalog-head"></head>
 <body>
 <nav th:replace="/fragments/commons :: navigation"></nav>
@@ -22,13 +24,11 @@
                         $153
                     </h2>
                     <a th:href="@{/offers/smartphones/{id}/buy(id = *{id})}" class="btn btn-primary btn-rounded btn-success">Buy</a>
-                    <a th:href="@{/offers/smartphones/{id}/edit(id = *{id})}" class="btn btn-primary btn-rounded">Edit</a>
+                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/offers/smartphones/{id}/edit(id = *{id})}" class="btn btn-primary btn-rounded">Edit</a>
 
-                    <!--                    <th:block th:if="*{canDelete}">-->
-                    <form th:action="@{/offers/smartphones/{id}/delete(id = *{id})}" th:method="delete" class="btn btn-primary btn-rounded btn-danger">
+                    <form sec:authorize="hasRole('ADMIN')" th:action="@{/offers/smartphones/{id}/delete(id = *{id})}" th:method="delete" class="btn btn-primary btn-rounded btn-danger">
                         <input type="submit" class="bg-transparent" style="border:none; color: white" value="Delete"/>
                     </form>
-                    <!--                    </th:block>-->
 
                     <h3 class="box-title mt-5">Keys for buying the product</h3>
                     <ul class="list-unstyled">

@@ -29,4 +29,6 @@ public interface SmartphoneOfferService {
     BigDecimal findPriceBySmartphoneName(String smartphoneModelName);
 
     void updateSmartphone(SmartphoneUpdateServiceModel smartphoneUpdateServiceModel, Principal principal, String smartphoneName);
+
+    boolean isAdmin(String username, Long id);
 }

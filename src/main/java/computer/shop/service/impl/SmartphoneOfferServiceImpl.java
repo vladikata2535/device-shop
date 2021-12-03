@@ -4,6 +4,8 @@ import computer.shop.models.entity.CouponEntity;
 import computer.shop.models.entity.SmartphoneEntity;
 import computer.shop.models.entity.SmartphoneOfferEntity;
 import computer.shop.models.entity.UserEntity;
+import computer.shop.models.entity.enumEntity.UserRoleEntity;
+import computer.shop.models.entity.enums.UserRoleEnum;
 import computer.shop.models.service.SmartphoneOfferServiceModel;
 import computer.shop.models.service.SmartphoneUpdateServiceModel;
 import computer.shop.models.view.SmartphoneOfferDetailsView;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -166,6 +169,8 @@ public class SmartphoneOfferServiceImpl implements SmartphoneOfferService {
                 .getPrice();
     }
 
+
+
     @Override
     public void updateSmartphone(SmartphoneUpdateServiceModel smartphoneUpdateServiceModel, Principal principal, String oldSmartphoneName) {
         UserEntity user = userRepository.findByUsername(principal.getName()).orElseThrow(() -> new ObjectNotFoundException("User not found"));
@@ -190,5 +195,22 @@ public class SmartphoneOfferServiceImpl implements SmartphoneOfferService {
                 .setName(smartphoneUpdateServiceModel.getName());
 
         smartphoneOfferRepository.save(smartphoneOfferEntity);
+    }
+
+    @Override
+    public boolean isAdmin(String username, Long id) {
+        Optional<SmartphoneOfferEntity> offerOpt = smartphoneOfferRepository.findById(id);
+        Optional<UserEntity> user = userRepository.findByUsername(username);
+
+        if(offerOpt.isEmpty() || user.isEmpty()){
+            return false;
+        }else {
+           return user
+                    .get()
+                    .getRoles()
+                    .stream()
+                    .map(UserRoleEntity::getRole)
+                    .anyMatch(r -> r == UserRoleEnum.ADMIN);
+        }
     }
 }
