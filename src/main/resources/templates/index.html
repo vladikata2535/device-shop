@@ -6,34 +6,54 @@
 
 <nav th:replace="/fragments/commons :: navigation"></nav>
 
-<main class="">
+<!--<main class="">-->
 
-    <div id="intro" class="p-xl-5">
-        <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
-            <div class="container d-flex align-items-center justify-content-center text-center h-100">
-                <div class="text-white">
-                    <h1 class="mb-3">Hello,
-                        <span sec:authorize="isAuthenticated()"
-                              sec:authentication="name">
+<!--    <div id="intro" class="p-xl-5">-->
+<!--        <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">-->
+<!--            <div class="container d-flex align-items-center justify-content-center text-center h-100">-->
+<!--                <div class="text-white">-->
+
+
+<!--                    <h5 class="mb-4">Enjoy your stay in our device shop application</h5>-->
+<!--                    <h5 class="mb-4">You can <a href="/users/login">login</a> or <a href="/users/register">register</a>-->
+<!--                        to have access to specific things in the shop</h5>-->
+<!--                                        <a class="btn btn-outline-light btn-lg m-2" href="https://www.youtube.com/watch?v=c9B4TPnak1A" role="button"-->
+<!--                                           rel="nofollow" target="_blank">Start tutorial</a>-->
+<!--                                        <a class="btn btn-outline-light btn-lg m-2" href="https://mdbootstrap.com/docs/standard/" target="_blank"-->
+<!--                                           role="button">Download MDB UI KIT</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</main>-->
+
+<div class="container px-4 px-lg-5 mt-5 p-5" style="">
+    <div class="row gx-4 gx-lg-5  align-items-center justify-content-center text-center">
+        <div class="col-lg-8 align-self-end bg-blur">
+            <h1 class="font-weight-bold" style="color: #ff8100!important;">DEVICE SHOP</h1>
+            <h3 class="mb-3" style="color: #ff8100!important;">Welcome,
+                <span sec:authorize="isAuthenticated()"
+                      sec:authentication="name">
                             Name of the logged in user.
                         </span>
-                        <span sec:authorize="!isAuthenticated()">
+                <span sec:authorize="!isAuthenticated()">
                             new customer
                         </span>
-                    </h1>
+            </h3>
+            <hr class="divider">
+        </div>
+        <div class="col-lg-8 align-self-baseline bg-blur">
 
-                    <h5 class="mb-4">Enjoy your stay in our device shop application</h5>
-                    <h5 class="mb-4">You can <a href="/users/login">login</a> or <a href="/users/register">register</a>
-                        to have access to specific things in the shop</h5>
-                    <!--                    <a class="btn btn-outline-light btn-lg m-2" href="https://www.youtube.com/watch?v=c9B4TPnak1A" role="button"-->
-                    <!--                       rel="nofollow" target="_blank">Start tutorial</a>-->
-                    <!--                    <a class="btn btn-outline-light btn-lg m-2" href="https://mdbootstrap.com/docs/standard/" target="_blank"-->
-                    <!--                       role="button">Download MDB UI KIT</a>-->
-                </div>
+            <p class="mb-5 h3" style="color: #ff8100!important;">You can login or register to have access to specific services in the shop</p>
+            <div>
+                <a class="btn btn-primary btn-lg col-md-3 btn-outline-warning m-2" th:href="@{/users/login}">Login</a>
+                <a class="btn btn-primary btn-lg col-md-3 btn-outline-warning m-2" th:href="@{/users/register}">Register</a>
             </div>
+
+            <p class="text-white-75 mb-5 mt-5 h4" style="color: #ff8100!important;">Welcome to our shop about smartphone and computer devices</p>
         </div>
     </div>
-</main>
+</div>
 
 
 <footer th:replace="/fragments/footer-fixed-bottom :: footer-fixed-bottom"></footer>
