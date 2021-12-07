@@ -16,8 +16,8 @@
                         <form th:action="@{/users/register}" th:method="post" th:object="${userRegisterBindingModel}">
                             <div class="mb-md-5 mt-md-4 pb-5">
 
-                                <h2 class="fw-bold mb-2 text-uppercase">Register</h2>
-                                <p class="text-white-50 mb-5">Please enter your register details!</p>
+                                <h2 class="fw-bold mb-2 text-uppercase" th:text="#{register}">Register</h2>
+                                <p class="text-white-50 mb-5" th:text="#{enterDetails}">Please enter your register details!</p>
 
                                 <p th:if="${isUserOrEmailOccupied}" class="bg-danger font-weight-bold">Username or email already exists</p>
 
@@ -329,13 +329,13 @@
                                 </div>
 
 
-                                <button class="btn btn-outline-light btn-lg px-5 btn-primary" type="submit">Register</button>
+                                <button class="btn btn-outline-light btn-lg px-5 btn-primary" type="submit" th:text="#{register}">Register</button>
 
                             </div>
                         </form>
 
                         <div>
-                            <p class="mb-0">Already have an account? <a th:href="@{/users/login}" class="text-white-50 fw-bold">Sign
+                            <p class="mb-0">[(#{alreadyHaveAccount})] <a th:href="@{/users/login}" class="text-white-50 fw-bold">Sign
                                 In</a></p>
                         </div>
 

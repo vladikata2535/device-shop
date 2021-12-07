@@ -5,12 +5,12 @@
 <nav th:replace="/fragments/commons :: navigation"></nav>
 
 <div class="container-fluid">
-    <h1 class="text-center text-white mt-5 bg-blur">Statistics about all requests on the App</h1>
+    <h1 class="text-center text-white mt-5 bg-blur" th:text="#{allStatistics}">Statistics about all requests on the App</h1>
 
     <div class="bg-blur">
-        <h3 class="text-center text-white mt-5"> Total requests: <th:block th:text="${stats.getTotalRequests()}"></th:block></h3>
-        <h3 class="text-center text-white mt-5"> Anonymous requests: <th:block th:text="${stats.getAnonymousRequests()}"></th:block></h3>
-        <h3 class="text-center text-white mt-5"> Auth requests: <th:block th:text="${stats.getAuthRequests()}"></th:block></h3>
+        <h3 class="text-center text-white mt-5"> [(#{totalRequests})] <th:block th:text="${stats.getTotalRequests()}"></th:block></h3>
+        <h3 class="text-center text-white mt-5"> [(#{anonymousRequests})] <th:block th:text="${stats.getAnonymousRequests()}"></th:block></h3>
+        <h3 class="text-center text-white mt-5"> [(#{authRequests})] <th:block th:text="${stats.getAuthRequests()}"></th:block></h3>
     </div>
 
 </div>

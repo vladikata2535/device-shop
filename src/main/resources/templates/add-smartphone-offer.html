@@ -6,7 +6,7 @@
 <nav th:replace="/fragments/commons :: navigation"></nav>
 
 <div class="p-5 text-center">
-    <h1 class="bg-blur text-light border-bottom border-top border-left border-right">Add Smartphone Offer</h1>
+    <h1 class="bg-blur text-light border-bottom border-top border-left border-right" th:text="#{addSmartphoneOffer}">Add Smartphone Offer</h1>
     <div class="d-flex justify-content-center">
         <form th:action="@{/offers/add-smartphone-offer}" th:method="post" th:object="${smartphoneOfferAddBindingModel}"
                 class="text-light">
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center mt-4">
-                <button class="btn btn-success btn-block w-50" type="submit">Add Smartphone Offer</button>
+                <button class="btn btn-success btn-block w-50" type="submit" th:text="#{addSmartphoneOffer}">Add Smartphone Offer</button>
             </div>
         </form>
     </div>

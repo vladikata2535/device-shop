@@ -22,7 +22,7 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="/">
             <img src="/images/navlogo.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
-            DeviceShop
+            [(#{shop})]
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,52 +31,52 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <th:block sec:authorize="isAuthenticated()">
-                    <a class="nav-link" aria-current="page" th:href="@{/home}">Home</a>
-                    <a class="nav-link" th:href="@{/users/my-coupons}">MyCoupons</a>
+                    <a class="nav-link" aria-current="page" th:href="@{/home}" th:text="#{home}">Home</a>
+                    <a class="nav-link" th:href="@{/users/my-coupons}" th:text="#{myCoupons}">MyCoupons</a>
                 </th:block>
 
 
-                <a sec:authorize="hasRole('ADMIN')" class="nav-link" th:href="@{/users/warehouse}">Warehouse</a>
+                <a sec:authorize="hasRole('ADMIN')" class="nav-link" th:href="@{/users/warehouse}" th:text="#{warehouse}">Warehouse</a>
 
                 <th:block sec:authorize="!isAuthenticated()">
-                    <a class="nav-link" th:href="@{/users/login}">Login</a>
-                    <a class="nav-link" th:href="@{/users/register}">Register</a>
+                    <a class="nav-link" th:href="@{/users/login}" th:text="#{login}">Login</a>
+                    <a class="nav-link" th:href="@{/users/register}" th:text="#{register}">Register</a>
                 </th:block>
 
 
                 <div class="nav-item dropdown" sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownOne" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
+                       data-bs-toggle="dropdown" aria-expanded="false" th:text="#{catalogs}">
                         Catalogs
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" th:href="@{/smartphones/catalog}">Smartphone Products</a></li>
-                        <li><a class="dropdown-item" th:href="@{/computers/catalog}">Computer Products</a></li>
+                        <li><a class="dropdown-item" th:href="@{/smartphones/catalog}" th:text="#{smartphoneProducts}">Smartphone Products</a></li>
+                        <li><a class="dropdown-item" th:href="@{/computers/catalog}" th:text="#{computerProducts}">Computer Products</a></li>
                     </ul>
                 </div>
                 <div class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTwo" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
+                       data-bs-toggle="dropdown" aria-expanded="false" th:text="#{addDevice}">
                         Add Device
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" th:href="@{/smartphones/add-smartphone}">Add Smartphone</a></li>
-                        <li><a class="dropdown-item" th:href="@{/computers/add-computer}">Add Computer</a></li>
+                        <li><a class="dropdown-item" th:href="@{/smartphones/add-smartphone}" th:text="#{addSmartphone}">Add Smartphone</a></li>
+                        <li><a class="dropdown-item" th:href="@{/computers/add-computer}" th:text="#{addComputer}">Add Computer</a></li>
                     </ul>
                 </div>
                 <div class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownThree" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
+                       data-bs-toggle="dropdown" aria-expanded="false" th:text="#{addOffer}">
                         Add Offer
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" th:href="@{/offers/add-computer-offer}">Add Computer Offer</a></li>
-                        <li><a class="dropdown-item" th:href="@{/offers/add-smartphone-offer}">Add Smartphone Offer</a>
+                        <li><a class="dropdown-item" th:href="@{/offers/add-computer-offer}" th:text="#{addComputerOffer}">Add Computer Offer</a></li>
+                        <li><a class="dropdown-item" th:href="@{/offers/add-smartphone-offer}" th:text="#{addSmartphoneOffer}">Add Smartphone Offer</a>
                         </li>
                     </ul>
                 </div>
 
-                <a sec:authorize="hasRole('ADMIN')" class="nav-link" th:href="@{/statistics}">Statistics</a>
+                <a sec:authorize="hasRole('ADMIN')" class="nav-link" th:href="@{/statistics}" th:text="#{statistics}">Statistics</a>
 
 
             </div>
@@ -85,16 +85,16 @@
             <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTwof" role="button"
                    data-bs-toggle="dropdown" aria-expanded="false">
-                    User, <span sec:authorize="isAuthenticated()"
+                    [(#{user})] <span sec:authorize="isAuthenticated()"
                                 sec:authentication="name">
                             Name of the logged in user.
                           </span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="nav-link" th:href="@{/users/profile}">Profile</a></li>
+                    <li><a class="nav-link" th:href="@{/users/profile}" th:text="#{profile}">Profile</a></li>
                     <li>
                         <form th:action="@{/users/logout}" th:method="post">
-                            <input class="btn nav-link " type="submit" value="Logout">
+                            <input class="btn nav-link " type="submit" th:value="#{logout}">
                         </form>
                     </li>
                 </ul>

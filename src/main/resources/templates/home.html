@@ -17,8 +17,8 @@
             </a>
                 <div class="card-body text-center">
                     <h4 class="card-title">Computers</h4>
-                    <p class="text-muted">Starting from $499</p><a class="btn btn-outline-primary btn-sm"
-                                                                   href="/computers/catalog" data-abc="true">View
+                    <p class="text-muted">[(#{startingFrom})] $499</p><a class="btn btn-outline-primary btn-sm"
+                                                                   href="/computers/catalog" data-abc="true" th:text="#{viewComputers}">View
                     Computers</a>
                 </div>
             </div>
@@ -33,8 +33,8 @@
             </a>
                 <div class="card-body text-center">
                     <h4 class="card-title">Smartphones</h4>
-                    <p class="text-muted">Starting from $50</p><a class="btn btn-outline-primary btn-sm"
-                                                                  href="/smartphones/catalog" data-abc="true">View
+                    <p class="text-muted">[(#{startingFrom})] $50</p><a class="btn btn-outline-primary btn-sm"
+                                                                  href="/smartphones/catalog" data-abc="true" th:text="#{viewSmartphones}">View
                     Smartphones</a>
                 </div>
             </div>
@@ -48,9 +48,9 @@
                 </div>
             </a>
                 <div class="card-body text-center">
-                    <h4 class="card-title">My Coupons</h4>
-                    <p class="text-muted">View your coupons for shopping</p><a class="btn btn-outline-primary btn-sm"
-                                                                               href="/users/my-coupons" data-abc="true">View
+                    <h4 class="card-title" th:text="#{myCoupons}">My Coupons</h4>
+                    <p class="text-muted" th:text="#{viewCouponsMessage}">View your coupons for shopping</p><a class="btn btn-outline-primary btn-sm"
+                                                                               href="/users/my-coupons" data-abc="true" th:text="#{viewCoupons}">View
                     Coupons</a>
                 </div>
             </div>
