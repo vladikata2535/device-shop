@@ -19,6 +19,6 @@ public class UserInfoRestController {
 
     @GetMapping("/api/user/info")
     public ResponseEntity<UserBalanceViewModel> getLoggedUserInfo(Principal principal){
-        return ResponseEntity.ok(userService.getLoggedUserInfo(principal));
+        return ResponseEntity.ok(userService.getLoggedUserInfo(principal.getName()));
     }
 }

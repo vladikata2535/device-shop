@@ -15,7 +15,7 @@ public interface UserService {
 
     Optional<UserEntity> findUserByName(String name);
 
-    UserBalanceViewModel getLoggedUserInfo(Principal principal);
+    UserBalanceViewModel getLoggedUserInfo(String name);
 
     boolean isUserExistingByEmailOrUsername(String email, String username);
 

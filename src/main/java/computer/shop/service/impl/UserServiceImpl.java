@@ -124,8 +124,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserBalanceViewModel getLoggedUserInfo(Principal principal) {
-        UserEntity user = findUserByName(principal.getName()).orElseThrow(() -> new ObjectNotFoundException("User not found"));
+    public UserBalanceViewModel getLoggedUserInfo(String name) {
+        UserEntity user = findUserByName(name).orElseThrow(() -> new ObjectNotFoundException("User not found"));
 
         return modelMapper.map(user, UserBalanceViewModel.class);
     }

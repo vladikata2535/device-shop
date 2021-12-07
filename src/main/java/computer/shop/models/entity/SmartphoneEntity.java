@@ -2,6 +2,7 @@ package computer.shop.models.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -118,7 +119,8 @@ public class SmartphoneEntity extends BaseEntity{
         return this;
     }
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false)
+    @Lob
     public String getDescription() {
         return description;
     }

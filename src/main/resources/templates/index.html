@@ -56,7 +56,7 @@
 
             <p class="h4 mt-5" style="color: #ff8100!important;" th:text="#{welcomeHello}">Welcome to our shop about smartphone and computer devices.</p>
             <p sec:authorize="isAuthenticated()" class="h4" style="color: #ff8100!important;" th:text="#{addMoneyOne}">You can add money on your profile page.</p>
-            <a class="btn-outline-warning font-weight-bold h4 text-decoration-underline" th:href="@{/users/profile}" th:text="#{profile}"></a>
+            <a sec:authorize="isAuthenticated()" class="btn-outline-warning font-weight-bold h4 text-decoration-underline" th:href="@{/users/profile}" th:text="#{profile}"></a>
         </div>
     </div>
 </div>

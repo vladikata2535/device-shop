@@ -36,7 +36,8 @@ public class ComputerEntity extends BaseEntity{
         return this;
     }
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false)
+    @Lob
     public String getDescription() {
         return description;
     }
