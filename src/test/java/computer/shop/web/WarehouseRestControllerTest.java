@@ -116,7 +116,7 @@ public class WarehouseRestControllerTest {
 
     @Test
     void testGetComputers() throws Exception {
-        var computer = initComputer();
+        initComputers();
 
         mockMvc.perform(get("/api/warehouse/computers"))
                 .andExpect(status().isOk())
@@ -135,7 +135,7 @@ public class WarehouseRestControllerTest {
                 .andExpect(jsonPath("$.[1].description", is(SMARTPHONE_DESCRIPTION_2)));
     }
 
-    private ComputerEntity initComputer() {
+    private ComputerEntity initComputers() {
         ComputerEntity computer = new ComputerEntity();
 
         VideoCardEntity videoCard = new VideoCardEntity()
