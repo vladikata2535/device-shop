@@ -299,6 +299,17 @@ class UserControllerTest {
 
     }
 
+    @WithMockUser(username = "admin")
+    @Test
+    void testLoginUserActivateCouponWhichNotExists() throws Exception {
+        mockMvc
+                .perform(get("/users/my-coupons/" + 10 + "/activate"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("object-not-found"))
+                .andExpect(model().attributeExists("message"));
+
+    }
+
 
 
 }
