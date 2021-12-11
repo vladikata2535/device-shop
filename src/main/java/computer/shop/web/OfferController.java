@@ -174,9 +174,9 @@ public class OfferController {
         boolean canUserBuyProduct;
 
         if (bindingResult.hasErrors()) {
-            canUserBuyProduct = userService.canUserBuyProduct(null, id, null, principal);
+            canUserBuyProduct = userService.canUserBuyProduct(null, id, null, principal.getName());
         } else {
-            canUserBuyProduct = userService.canUserBuyProduct(null, id, couponBuyBindingModel.getCouponName(), principal);
+            canUserBuyProduct = userService.canUserBuyProduct(null, id, couponBuyBindingModel.getCouponName(), principal.getName());
         }
 
         if (!canUserBuyProduct) {
@@ -230,9 +230,9 @@ public class OfferController {
         boolean canUserBuyProduct;
 
         if(bindingResult.hasErrors()){
-            canUserBuyProduct = userService.canUserBuyProduct(id, null, null, principal);
+            canUserBuyProduct = userService.canUserBuyProduct(id, null, null, principal.getName());
         }else {
-            canUserBuyProduct = userService.canUserBuyProduct(id, null, couponBuyBindingModel.getCouponName(), principal);
+            canUserBuyProduct = userService.canUserBuyProduct(id, null, couponBuyBindingModel.getCouponName(), principal.getName());
         }
 
         if (!canUserBuyProduct) {

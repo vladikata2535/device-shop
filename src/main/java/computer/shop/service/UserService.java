@@ -19,11 +19,11 @@ public interface UserService {
 
     boolean isUserExistingByEmailOrUsername(String email, String username);
 
-    boolean canUserBuyProduct(Long smartphoneOfferId ,Long computerOfferId, String couponName, Principal principal);
+    boolean canUserBuyProduct(Long smartphoneOfferId ,Long computerOfferId, String couponName, String name);
 
-    double getUserBalance(Principal principal);
+    double getUserBalance(String name);
 
-    UserViewModel getUserInfo(Principal principal);
+    UserViewModel getUserInfo(String userName);
 
-    void addMoneyToUser(Principal principal);
+    void addMoneyToUser(String userName);
 }

@@ -103,7 +103,7 @@ public class UserController {
     @GetMapping("/profile")
     public String profile(Model model, Principal principal){
 
-        model.addAttribute("info", userService.getUserInfo(principal));
+        model.addAttribute("info", userService.getUserInfo(principal.getName()));
 
         return "profile";
     }
@@ -111,7 +111,7 @@ public class UserController {
     @GetMapping("/profile/add-money")
     public String addMoney(Principal principal){
 
-        userService.addMoneyToUser(principal);
+        userService.addMoneyToUser(principal.getName());
 
         return "redirect:/users/profile";
     }

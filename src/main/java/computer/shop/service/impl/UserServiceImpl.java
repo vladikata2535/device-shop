@@ -139,7 +139,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean canUserBuyProduct(Long smartphoneOfferId, Long computerOfferId, String couponName, Principal principal) {
+    public boolean canUserBuyProduct(Long smartphoneOfferId, Long computerOfferId, String couponName, String name) {
         double price;
 
         if (smartphoneOfferId == null) {
@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
             price = smartphoneOfferService.findOfferPriceById(smartphoneOfferId);
         }
 
-        double userBalance = getUserBalance(principal);
+        double userBalance = getUserBalance(name);
         double result;
 
         if (couponName != null) {
@@ -164,25 +164,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public double getUserBalance(Principal principal) {
+    public double getUserBalance(String name) {
         return userRepository
-                .findByUsername(principal.getName())
+                .findByUsername(name)
                 .map(userEntity -> userEntity.getBalance().doubleValue())
-                .orElseThrow(() -> new ObjectNotFoundException("User with name " + principal.getName() + " not found!"));
+                .orElseThrow(() -> new ObjectNotFoundException("User with name " + name + " not found!"));
     }
 
     @Override
-    public UserViewModel getUserInfo(Principal principal) {
+    public UserViewModel getUserInfo(String userName) {
         return userRepository
-                .findByUsername(principal.getName())
+                .findByUsername(userName)
                 .map(userEntity -> modelMapper.map(userEntity, UserViewModel.class))
-                .orElseThrow(() -> new ObjectNotFoundException("User with name " + principal.getName() + " not found!"));
+                .orElseThrow(() -> new ObjectNotFoundException("User with name " + userName + " not found!"));
 
     }
 
     @Override
-    public void addMoneyToUser(Principal principal) {
-        UserEntity user = findUserByName(principal.getName()).orElseThrow(() -> new ObjectNotFoundException("User not found"));
+    public void addMoneyToUser(String username) {
+        UserEntity user = findUserByName(username).orElseThrow(() -> new ObjectNotFoundException("User not found"));
 
         double balance = user.getBalance().doubleValue();
 
