@@ -114,8 +114,8 @@ public class ComputerOfferServiceImpl implements ComputerOfferService {
     }
 
     @Override
-    public void buyProduct(Long offerId, String couponName, Principal principal) {
-        UserEntity user = userRepository.findByUsername(principal.getName()).orElseThrow(() -> new ObjectNotFoundException("User not found"));
+    public void buyProduct(Long offerId, String couponName, String username) {
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User not found"));
         ComputerOfferEntity offerEntity = computerOfferRepository.findById(offerId).orElseThrow(() -> new ObjectNotFoundException("Computer offer entity not found"));
         Long computerId = offerEntity.getComputer().getId();
 

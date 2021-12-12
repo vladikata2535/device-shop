@@ -10,7 +10,7 @@ import java.security.Principal;
 import java.util.List;
 
 public interface SmartphoneOfferService {
-    void addSmartphoneOffer(SmartphoneOfferServiceModel serviceModel, Principal principal);
+    void addSmartphoneOffer(SmartphoneOfferServiceModel serviceModel, String username);
 
     List<SmartphoneOfferViewModel> getAllSmartphonesCatalog();
 

@@ -45,9 +45,9 @@ public class SmartphoneOfferServiceImpl implements SmartphoneOfferService {
     }
 
     @Override
-    public void addSmartphoneOffer(SmartphoneOfferServiceModel serviceModel, Principal principal) {
+    public void addSmartphoneOffer(SmartphoneOfferServiceModel serviceModel, String username) {
         SmartphoneEntity smartphone = smartphoneService.findSmartphoneByModelName(serviceModel.getSmartphone());
-        UserEntity user = userRepository.findByUsername(principal.getName()).orElseThrow(() -> new ObjectNotFoundException("User not found!"));
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User not found!"));
 
         SmartphoneOfferEntity smartphoneOfferEntity = modelMapper.map(serviceModel, SmartphoneOfferEntity.class);
 

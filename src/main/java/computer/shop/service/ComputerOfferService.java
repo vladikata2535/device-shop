@@ -18,7 +18,7 @@ public interface ComputerOfferService {
 
     double findOfferPriceById(Long offerId);
 
-    void buyProduct(Long offerId, String couponName, Principal principal);
+    void buyProduct(Long offerId, String couponName, String username);
 
     void deleteOffer(Long id);
 

@@ -1,6 +1,7 @@
 package computer.shop.service.impl;
 
 import computer.shop.models.entity.ComputerEntity;
+import computer.shop.models.entity.SmartphoneEntity;
 import computer.shop.models.entity.enumEntity.*;
 import computer.shop.models.entity.enums.ComputerBoxEnum;
 import computer.shop.models.entity.enums.componentsEnums.*;
@@ -115,7 +116,6 @@ class ComputerServiceImplTest {
                 .setManufacturedOn(LocalDate.now())
                 .setDescription("Description")
                 .setComputerBox(ComputerBoxEnum.MID_TOWER);
-
     }
 
     @Test

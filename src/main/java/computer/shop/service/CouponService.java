@@ -10,9 +10,9 @@ public interface CouponService {
 
     void addCouponsToLoggedUser();
 
-    List<CouponViewModel> findAllCurrentLoggedUserNotActiveCoupons(Principal principal);
+    List<CouponViewModel> findAllCurrentLoggedUserNotActiveCoupons(String username);
 
-    List<CouponViewModel> findAllCurrentLoggedUserActiveCoupons(Principal principal);
+    List<CouponViewModel> findAllCurrentLoggedUserActiveCoupons(String username);
 
-    void activateCoupon(Long id, Principal principal);
+    void activateCoupon(Long id, String username);
 }

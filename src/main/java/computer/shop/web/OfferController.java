@@ -90,7 +90,7 @@ public class OfferController {
             return "redirect:/offers/add-smartphone-offer";
         }
 
-        smartphoneOfferService.addSmartphoneOffer(modelMapper.map(smartphoneOfferAddBindingModel, SmartphoneOfferServiceModel.class), principal);
+        smartphoneOfferService.addSmartphoneOffer(modelMapper.map(smartphoneOfferAddBindingModel, SmartphoneOfferServiceModel.class), principal.getName());
 
         return "redirect:/smartphones/catalog";
     }
@@ -158,7 +158,7 @@ public class OfferController {
     @GetMapping("/computers/{id}/buy")
     public String buyComputer(@PathVariable Long id, Model model, Principal principal) {
 
-        model.addAttribute("couponsNames", couponService.findAllCurrentLoggedUserActiveCoupons(principal));
+        model.addAttribute("couponsNames", couponService.findAllCurrentLoggedUserActiveCoupons(principal.getName()));
         model.addAttribute("offerDetails", computerOfferService.findOfferById(id));
 
         if (!model.containsAttribute("canUserBuy")) {
@@ -187,9 +187,9 @@ public class OfferController {
         }
 
         if (bindingResult.hasErrors()) {
-            computerOfferService.buyProduct(id, null, principal);
+            computerOfferService.buyProduct(id, null, principal.getName());
         } else {
-            computerOfferService.buyProduct(id, couponBuyBindingModel.getCouponName(), principal);
+            computerOfferService.buyProduct(id, couponBuyBindingModel.getCouponName(), principal.getName());
         }
 
         return "redirect:/home";
@@ -214,7 +214,7 @@ public class OfferController {
     @GetMapping("/smartphones/{id}/buy")
     public String buySmartphone(@PathVariable Long id, Model model, Principal principal){
 
-        model.addAttribute("couponsNames", couponService.findAllCurrentLoggedUserActiveCoupons(principal));
+        model.addAttribute("couponsNames", couponService.findAllCurrentLoggedUserActiveCoupons(principal.getName()));
         model.addAttribute("offerDetails", smartphoneOfferService.findOfferById(id));
 
         if (!model.containsAttribute("canUserBuy")) {

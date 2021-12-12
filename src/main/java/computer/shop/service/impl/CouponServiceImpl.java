@@ -71,8 +71,8 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<CouponViewModel> findAllCurrentLoggedUserNotActiveCoupons(Principal principal) {
-        UserEntity user = userRepository.findByUsername(principal.getName()).orElseThrow(() -> new ObjectNotFoundException("User not found"));
+    public List<CouponViewModel> findAllCurrentLoggedUserNotActiveCoupons(String username) {
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User not found"));
         return user
                 .getNotActiveCoupons()
                 .stream()
@@ -85,8 +85,8 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<CouponViewModel> findAllCurrentLoggedUserActiveCoupons(Principal principal) {
-        UserEntity user = userRepository.findByUsername(principal.getName()).orElseThrow(() -> new ObjectNotFoundException("User not found"));
+    public List<CouponViewModel> findAllCurrentLoggedUserActiveCoupons(String username) {
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User not found"));
 
         return user
                 .getActiveCoupons()
@@ -101,9 +101,9 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public void activateCoupon(Long id, Principal principal) {
+    public void activateCoupon(Long id, String username) {
         CouponEntity couponEntity = couponRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Coupon with id " + id + " not found!"));
-        UserEntity user = userRepository.findByUsername(principal.getName()).orElseThrow(() -> new ObjectNotFoundException("User not found"));
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User not found"));
 
         int counter = 0;
 

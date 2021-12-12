@@ -81,8 +81,8 @@ public class UserController {
     @GetMapping("/my-coupons")
     public String myCoupons(Model model, Principal principal){
 
-        model.addAttribute("notActiveUserCoupons", couponService.findAllCurrentLoggedUserNotActiveCoupons(principal));
-        model.addAttribute("activeUserCoupons", couponService.findAllCurrentLoggedUserActiveCoupons(principal));
+        model.addAttribute("notActiveUserCoupons", couponService.findAllCurrentLoggedUserNotActiveCoupons(principal.getName()));
+        model.addAttribute("activeUserCoupons", couponService.findAllCurrentLoggedUserActiveCoupons(principal.getName()));
 
         return "my-coupons";
     }
@@ -90,7 +90,7 @@ public class UserController {
     @GetMapping("/my-coupons/{id}/activate")
     public String activateCoupon(@PathVariable Long id, Principal principal){
 
-        couponService.activateCoupon(id, principal);
+        couponService.activateCoupon(id, principal.getName());
 
         return "redirect:/users/my-coupons";
     }
